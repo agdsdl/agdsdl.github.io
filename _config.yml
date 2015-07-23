@@ -3,9 +3,9 @@
 # ----------------------- #
 
 url: http://agdsdl.github.io
-title: 乐的博
+title: 乐の博客
 subtitle: 行而不思则罔，思而不行则怠
-author: 苏东乐
+author: Dongle Su
 simple_search: https://www.google.com/search
 description: 一个软件工程师的呓语
 
@@ -65,7 +65,7 @@ default_asides: [custom/asides/category_list.html, asides/recent_posts.html, asi
 
 # Github repositories
 github_user: agdsdl
-github_repo_count: 0
+github_repo_count: 3
 github_show_profile_link: true
 #github_skip_forks: true
 
