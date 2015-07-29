@@ -9,9 +9,10 @@
   <meta name="author" content="Dongle Su">
 
   
-  <meta name="description" content="原理： OC调用javascript是通过 1
-[webView stringByEvaluatingJavaScriptFromString:@"document.title"]; javascript调用OC一般是通过在页面中发起一个特定的url请求，然后在OC中响应 1
--(BOOL) &hellip;">
+  <meta name="description" content="概要 不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
+你只需本地写好markdown文件，然后rake generate就可以生成博客空间的所有静态网页，
+然后rake deploy就可以将网站更新到服务器。
+Octopress支持两种更新方式：github和Rsync &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,63 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-29T18:25:47+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:25 pm</span></time>
+        
+           | <a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/#disqus_thread"
+             data-disqus-identifier="http://agdsdl.github.io/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>概要</h2>
+
+<p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
+你只需本地写好markdown文件，然后<code>rake generate</code>就可以生成博客空间的所有静态网页，
+然后<code>rake deploy</code>就可以将网站更新到服务器。
+Octopress支持两种更新方式：github和Rsync</p>
+
+<h3>github</h3>
+
+<p>github提供了免费的静态网页托管服务，你需要新建一个名为username.github.io的代码仓库，将你的网站推送到这个仓库，
+之后就可以用浏览器访问你的网站了：username.github.io
+采用github更新方式，本质上就是将Octopress生成的本地页面推送到username.github.io
+由于github是免费的，通过git管理网站，并且支持CNAME域名指向，这真是一种方便又快捷的建站方式，
+因此Octopress推荐使用这种方式，<a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a>和本博采用的也是这种方式。</p>
+
+<h3>Rsync</h3>
+
+<p>然而你可能有了自己的服务器，或者站点里包含一些动态页面，必须使用自己的服务器。
+这时你就可以用Rsync同步方法将网站同步到你的服务器。
+Rsync本质是通过ssh将文件拷贝到服务器，
+你可以看<a href="http://octopress.org/docs/deploying/rsync/">这篇官方文档</a>，这里就不深入阐述了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -205,12 +263,16 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (2)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li>
+    <li><a href='/blog/categories/github/'>github (1)</a></li><li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (2)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li><li><a href='/blog/categories/bo-ke/'>博客 (1)</a></li>
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">IOS Hybird开发 - 与OC交互</a>
