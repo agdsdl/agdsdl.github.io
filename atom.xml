@@ -4,7 +4,7 @@
   <title><![CDATA[乐の博客]]></title>
   <link href="http://agdsdl.github.io/atom.xml" rel="self"/>
   <link href="http://agdsdl.github.io/"/>
-  <updated>2015-08-04T23:50:10+08:00</updated>
+  <updated>2015-08-05T00:21:42+08:00</updated>
   <id>http://agdsdl.github.io/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -12,15 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Test]]></title>
-    <link href="http://agdsdl.github.io/blog/2015/08/03/test/"/>
-    <updated>2015-08-03T05:11:52+08:00</updated>
-    <id>http://agdsdl.github.io/blog/2015/08/03/test</id>
-    <content type="html"><![CDATA[<h1>test</h1>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[搭建基于Octopress的博客]]></title>
