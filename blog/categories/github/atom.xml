@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Github | 乐の博客]]></title>
   <link href="http://agdsdl.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://agdsdl.github.io/"/>
-  <updated>2015-08-05T00:39:03+08:00</updated>
+  <updated>2015-08-14T00:08:55+08:00</updated>
   <id>http://agdsdl.github.io/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -285,7 +285,25 @@ git commit -m "your message"
 git push origin source
 </code></p>
 
-<p>todo: push source to private repo.</p>
+<h2>推送source到私有仓库</h2>
+
+<pre><code>git remote add sourceRep your_source_repo
+git push sourceRep source
+</code></pre>
+
+<h2>在其他电脑上同步octopress</h2>
+
+<pre><code>git clone your_source_repo myblog
+cd myblog
+git checkout origin/source
+git checkout -b master
+mkdir _deploy
+cd _deploy
+git clone your_deploy_repo
+cd ..
+</code></pre>
+
+<p>然后就可以写博客和发布了！</p>
 
 <h2>参考</h2>
 
