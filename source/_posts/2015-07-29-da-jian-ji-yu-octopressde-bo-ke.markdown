@@ -226,11 +226,80 @@ git commit -m "your message"
 git push origin source
 ```
 
-todo: push source to private repo.
+## 在其他电脑上同步你的Octopress博客
+``` bash
+git clone https://github.com/your_account/your_account.github.io.git
+cd your_account
+git checkout source #切换到source分支
+rake preview #先preview测试一下
+#CTRL-C结束preview
+#在新的电脑环境需要重新设置github账户：
+rake setup_github_pages
+#然后就可以发布了：
+rake deploy
+```
+
+## OS X EI Capitan 更新
+升级到新系统后，`rake preview`可能会报错：
+``` bash
+rake preview
+Starting to watch source with Jekyll and Compass. Starting Rack on port 4000
+rake aborted!
+Errno::ENOENT: No such file or directory - jekyll
+```
+这需要更新到最新ruby（2.2.3），用：
+``` bash
+ruby --version
+ruby 2.0.0p645 (2015-04-13 revision 50299) [universal.x86_64-darwin15]
+```
+来确定ruby的版本号。
+
+rbenv是很好的ruby版本管理工具，我们用rbenv来升级ruby。
+
+首先升级rbenv，而rbenv是通过Homebrew管理的，所以要先升级Homebrew。
+
+可以通过下面命令来升级brew和rbenv：
+``` bash
+brew update
+brew install rbenv ruby-build
+```
+可是我更推荐用一个图形化管理工具[Cakebrew](https://www.cakebrew.com/)来升级。
+
+更新完rbenv后，再更新ruby：
+``` bash
+rbenv install 2.2.3
+```
+然后设置要使用的ruby版本：
+``` bash
+rbenv global 2.2.3 #设置全局ruby版本
+rbenv local 2.2.3 #设置本地ruby版本
+```
+要使rbenv的设置生效，需要在`~/.bash_profile`中加入这一句：`eval "$(rbenv init -)"`,然后重启终端。
+
+验证一下ruby版本：
+``` bash
+ruby --version
+ruby 2.2.3p173 (2015-08-18 revision 51636) [x86_64-darwin15]
+```
+重新安装Octopress的依赖：
+``` bash
+gem install bundler
+When the above completes
+rbenv rehash
+bundle install
+```
+这时应该没问题了。
 
 ##参考
+
 http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/
+
 http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html
+
 http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/
-http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/
+
 http://octopress.org/docs/
+
+http://schalkneethling.github.io/blog/2015/10/16/errno-enoent-no-such-file-or-directory-jekyll-octopress-el-capitan/
+
+http://about.ac/2012/04/install-ruby-with-rbenv.html
