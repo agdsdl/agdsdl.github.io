@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 博客 | 乐の博客]]></title>
   <link href="http://agdsdl.github.io/blog/categories/bo-ke/atom.xml" rel="self"/>
   <link href="http://agdsdl.github.io/"/>
-  <updated>2016-02-15T19:07:17+08:00</updated>
+  <updated>2016-02-15T19:32:54+08:00</updated>
   <id>http://agdsdl.github.io/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -285,15 +285,84 @@ git commit -m "your message"
 git push origin source
 </code></p>
 
-<p>todo: push source to private repo.</p>
+<h2>在其他电脑上同步你的Octopress博客</h2>
+
+<pre><code class="bash">git clone https://github.com/your_account/your_account.github.io.git
+cd your_account
+git checkout source #切换到source分支
+rake preview #先preview测试一下
+#CTRL-C结束preview
+#在新的电脑环境需要重新设置github账户：
+rake setup_github_pages
+#然后就可以发布了：
+rake deploy
+</code></pre>
+
+<h2>OS X EI Capitan 更新</h2>
+
+<p>升级到新系统后，<code>rake preview</code>可能会报错：
+<code>bash
+rake preview
+Starting to watch source with Jekyll and Compass. Starting Rack on port 4000
+rake aborted!
+Errno::ENOENT: No such file or directory - jekyll
+</code>
+这需要更新到最新ruby（2.2.3），用：
+<code>bash
+ruby --version
+ruby 2.0.0p645 (2015-04-13 revision 50299) [universal.x86_64-darwin15]
+</code>
+来确定ruby的版本号。</p>
+
+<p>rbenv是很好的ruby版本管理工具，我们用rbenv来升级ruby。</p>
+
+<p>首先升级rbenv，而rbenv是通过Homebrew管理的，所以要先升级Homebrew。</p>
+
+<p>可以通过下面命令来升级brew和rbenv：
+<code>bash
+brew update
+brew install rbenv ruby-build
+</code>
+可是我更推荐用一个图形化管理工具<a href="https://www.cakebrew.com/">Cakebrew</a>来升级。</p>
+
+<p>更新完rbenv后，再更新ruby：
+<code>bash
+rbenv install 2.2.3
+</code>
+然后设置要使用的ruby版本：
+<code>bash
+rbenv global 2.2.3 #设置全局ruby版本
+rbenv local 2.2.3 #设置本地ruby版本
+</code>
+要使rbenv的设置生效，需要在<code>~/.bash_profile</code>中加入这一句：<code>eval "$(rbenv init -)"</code>,然后重启终端。</p>
+
+<p>验证一下ruby版本：
+<code>bash
+ruby --version
+ruby 2.2.3p173 (2015-08-18 revision 51636) [x86_64-darwin15]
+</code>
+重新安装Octopress的依赖：
+<code>bash
+gem install bundler
+When the above completes
+rbenv rehash
+bundle install
+</code>
+这时应该没问题了。</p>
 
 <h2>参考</h2>
 
-<p><a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a>
-<a href="http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html">http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html</a>
-<a href="http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/">http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/</a>
-<a href="http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/">http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/</a>
-<a href="http://octopress.org/docs/">http://octopress.org/docs/</a></p>
+<p><a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a></p>
+
+<p><a href="http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html">http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html</a></p>
+
+<p><a href="http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/">http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/</a></p>
+
+<p><a href="http://octopress.org/docs/">http://octopress.org/docs/</a></p>
+
+<p><a href="http://schalkneethling.github.io/blog/2015/10/16/errno-enoent-no-such-file-or-directory-jekyll-octopress-el-capitan/">http://schalkneethling.github.io/blog/2015/10/16/errno-enoent-no-such-file-or-directory-jekyll-octopress-el-capitan/</a></p>
+
+<p><a href="http://about.ac/2012/04/install-ruby-with-rbenv.html">http://about.ac/2012/04/install-ruby-with-rbenv.html</a></p>
 ]]></content>
   </entry>
   

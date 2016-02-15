@@ -440,15 +440,125 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>todo: push source to private repo.</p>
+<h2>在其他电脑上同步你的Octopress博客</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/your_account/your_account.github.io.git
+</span><span class='line'><span class="nb">cd </span>your_account
+</span><span class='line'>git checkout <span class="nb">source</span> <span class="c">#切换到source分支</span>
+</span><span class='line'>rake preview <span class="c">#先preview测试一下</span>
+</span><span class='line'><span class="c">#CTRL-C结束preview</span>
+</span><span class='line'><span class="c">#在新的电脑环境需要重新设置github账户：</span>
+</span><span class='line'>rake setup_github_pages
+</span><span class='line'><span class="c">#然后就可以发布了：</span>
+</span><span class='line'>rake deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>OS X EI Capitan 更新</h2>
+
+<p>升级到新系统后，<code>rake preview</code>可能会报错：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake preview
+</span><span class='line'>Starting to watch <span class="nb">source </span>with Jekyll and Compass. Starting Rack on port 4000
+</span><span class='line'>rake aborted!
+</span><span class='line'>Errno::ENOENT: No such file or directory - jekyll
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这需要更新到最新ruby（2.2.3），用：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby --version
+</span><span class='line'>ruby 2.0.0p645 <span class="o">(</span>2015-04-13 revision 50299<span class="o">)</span> <span class="o">[</span>universal.x86_64-darwin15<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>来确定ruby的版本号。</p>
+
+<p>rbenv是很好的ruby版本管理工具，我们用rbenv来升级ruby。</p>
+
+<p>首先升级rbenv，而rbenv是通过Homebrew管理的，所以要先升级Homebrew。</p>
+
+<p>可以通过下面命令来升级brew和rbenv：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>brew update
+</span><span class='line'>brew install rbenv ruby-build
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可是我更推荐用一个图形化管理工具<a href="https://www.cakebrew.com/">Cakebrew</a>来升级。</p>
+
+<p>更新完rbenv后，再更新ruby：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rbenv install 2.2.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后设置要使用的ruby版本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rbenv global 2.2.3 <span class="c">#设置全局ruby版本</span>
+</span><span class='line'>rbenv <span class="nb">local </span>2.2.3 <span class="c">#设置本地ruby版本</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>要使rbenv的设置生效，需要在<code>~/.bash_profile</code>中加入这一句：<code>eval "$(rbenv init -)"</code>,然后重启终端。</p>
+
+<p>验证一下ruby版本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby --version
+</span><span class='line'>ruby 2.2.3p173 <span class="o">(</span>2015-08-18 revision 51636<span class="o">)</span> <span class="o">[</span>x86_64-darwin15<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重新安装Octopress的依赖：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gem install bundler
+</span><span class='line'>When the above completes
+</span><span class='line'>rbenv rehash
+</span><span class='line'>bundle install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这时应该没问题了。</p>
 
 <h2>参考</h2>
 
-<p><a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a>
-<a href="http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html">http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html</a>
-<a href="http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/">http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/</a>
-<a href="http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/">http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/</a>
-<a href="http://octopress.org/docs/">http://octopress.org/docs/</a></p>
+<p><a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a></p>
+
+<p><a href="http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html">http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html</a></p>
+
+<p><a href="http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/">http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/</a></p>
+
+<p><a href="http://octopress.org/docs/">http://octopress.org/docs/</a></p>
+
+<p><a href="http://schalkneethling.github.io/blog/2015/10/16/errno-enoent-no-such-file-or-directory-jekyll-octopress-el-capitan/">http://schalkneethling.github.io/blog/2015/10/16/errno-enoent-no-such-file-or-directory-jekyll-octopress-el-capitan/</a></p>
+
+<p><a href="http://about.ac/2012/04/install-ruby-with-rbenv.html">http://about.ac/2012/04/install-ruby-with-rbenv.html</a></p>
 </div>
 
 
