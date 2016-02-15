@@ -1,12 +1,11 @@
 ---
 layout: post
-title: "write a tweak"
+title: "编写一个iOS越狱插件(tweak)"
 date: 2016-02-04 15:38:29 +0800
 comments: true
 categories: 
 ---
 
-# 编写一个iOS越狱插件(tweak)
 
 折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。
 
