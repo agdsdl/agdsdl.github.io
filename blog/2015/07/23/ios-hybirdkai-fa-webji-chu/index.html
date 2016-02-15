@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>IOS Hybird开发 - Web基础 - 乐の博客</title>
+  <meta name="author" content="Dongle Su">
+
+  
+  <meta name="description" content="Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
+他同时涉及到web开发和native开发。
+这里简单讲讲web开发。 Web常用目录结构: [name].html 页面文件 style.css 主样式文件 m-style.css 移动平台主样式文件 img/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="乐の博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-65560025-1']);
+    // for github.io
+    _gaq.push(['_setDomainName','github.io']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">乐の博客</a></h1>
+  
+    <h2>行而不思则罔，思而不行则怠</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="agdsdl.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">IOS Hybird开发 - Web基础</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-23T17:21:17+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:21 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://agdsdl.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
+他同时涉及到web开发和native开发。
+这里简单讲讲web开发。</p>
+
+<ul>
+<li>Web常用目录结构:</li>
+</ul>
+
+
+<p>[name].html 页面文件</p>
+
+<p>style.css 主样式文件</p>
+
+<p>m-style.css 移动平台主样式文件</p>
+
+<p>img/ 图片目录</p>
+
+<p>js/ javascript文件目录</p>
+
+<p>css/ css文件目录</p>
+
+<!-- more -->
+
+
+<ul>
+<li>html结构示意：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;html&gt;
+</span><span class='line'>&lt;head&gt;
+</span><span class='line'>    &lt;meta charset="utf-8"&gt;
+</span><span class='line'>    &lt;title&gt;抢红包&lt;/title&gt;
+</span><span class='line'>    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+</span><span class='line'>    &lt;link href="m-style.css" rel="stylesheet" /&gt;
+</span><span class='line'>    &lt;script src="../vendor/jquery.js"&gt;&lt;/script&gt;
+</span><span class='line'>&lt;/head&gt;
+</span><span class='line'>&lt;body&gt;
+</span><span class='line'>  &lt;div class="topbk"&gt;
+</span><span class='line'>      &lt;img src="img/packet_bg@2x.png" width="100%"&gt;
+</span><span class='line'>      &lt;p class="top_title"&gt;红包，先抢先得！&lt;/p&gt;
+</span><span class='line'>      &lt;div class="packet_long"&gt;
+</span><span class='line'>        &lt;div id="head_icon"&gt;&lt;/div&gt;
+</span><span class='line'>        &lt;div id="scramble_button"&gt;光速抢&lt;/div&gt;
+</span><span class='line'>        &lt;p id="packet_history"&gt;看看大家的手气&gt;&lt;/p&gt;
+</span><span class='line'>      &lt;/div&gt;
+</span><span class='line'>  &lt;/div&gt;
+</span><span class='line'>    &lt;div class="packet_rules"&gt;
+</span><span class='line'>    &lt;p&gt;
+</span><span class='line'>      红包规则：
+</span><span class='line'>    &lt;/p&gt;
+</span><span class='line'>    &lt;p&gt;
+</span><span class='line'>      1.手机绑定用户专享； &lt;br&gt;
+</span><span class='line'>      2.每个红包，每个账户限领一次；
+</span><span class='line'>    &lt;/p&gt;
+</span><span class='line'>  &lt;/div&gt;
+</span><span class='line'>    &lt;script src="nativeBridge.js"&gt;&lt;/script&gt;
+</span><span class='line'>    &lt;script src="app.js"&gt;&lt;/script&gt;
+</span><span class='line'>&lt;/body&gt;
+</span><span class='line'>&lt;/html&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>&lt;head&gt;</code>段声明页面属性、包含CSS文件、js文件。head会在body前被加载，一些需要预先加载的文件可以放在head中。
+<code>&lt;body&gt;</code>段是页面内容
+<code>&lt;p class="top_title"&gt;</code>p是段落元素, <code>class="top_title"</code>是元素属性，指定了该元素的类。
+<code>&lt;div id="head_icon"&gt;</code>div是块元素， <code>id="head_icon"</code>指定了元素的id.
+<code>&lt;img src="img/packet_bg@2x.png"&gt;</code>img是图像元素, 这里通过src属性指定了该图像的图片地址。</p>
+
+<ul>
+<li>CSS结构示意：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>html {
+</span><span class='line'>  height: 100%;
+</span><span class='line'>}
+</span><span class='line'>body {
+</span><span class='line'>  min-width: 320px;
+</span><span class='line'>  margin: 0;padding: 0;
+</span><span class='line'>  background-color:#FCECD3;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>.topbk{
+</span><span class='line'>  text-align: center;
+</span><span class='line'>}
+</span><span class='line'>#scramble_button{
+</span><span class='line'>  position: absolute;
+</span><span class='line'>
+</span><span class='line'>  background: url(img/packet_button@2x.png) no-repeat;
+</span><span class='line'>  background-size: 100% 100%;
+</span><span class='line'>
+</span><span class='line'>  top:150px;
+</span><span class='line'>  left:50%;
+</span><span class='line'>  width:180px;
+</span><span class='line'>  height:27px;
+</span><span class='line'>  margin-left:-40%;
+</span><span class='line'>  padding-top:10px;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   这是CSS样式的基本语法
+   &ldquo;XXX"是元素选择器，选择所有XXX元素。
+   &rdquo;.XXX"是类选择器，选择所有class=XXX的元素。
+   &ldquo;#XXX"是id选择器，选择所有id=XXX的元素。</p>
+
+<ul>
+<li><p>js结构示意
+js可以独立成js文件，也可以嵌入在html页面中。</p></li>
+<li><p>引用js文件:
+<code>
+ &lt;script src="../vendor/jquery.js"&gt;&lt;/script&gt;
+</code></p></li>
+<li><p>内嵌js：
+<code>
+&lt;script&gt;
+require(['app/packet_history'], function(model) {
+  model.init();
+});
+&lt;/script&gt;
+</code></p></li>
+</ul>
+
+
+<p> 因为浏览器会按顺序解析标签，将script放到body的最后可以防止script的加载阻塞整个页面的渲染。</p>
+
+<ul>
+<li>Web技术（html,css,javascript）参考网站：</li>
+</ul>
+
+
+<p> <a href="https://developer.mozilla.org/zh-CN/docs/Web">https://developer.mozilla.org/zh-CN/docs/Web</a></p>
+
+<p> <a href="http://www.w3school.com.cn/">http://www.w3school.com.cn/</a></p>
+
+<ul>
+<li>使用jquery：</li>
+</ul>
+
+
+<p> <a href="http://jquery.com/">jquery</a>是一个极通用的JavaScript库，通过他提供的选择器和封装的功能函数，可以大大简化web开发。</p>
+
+<p> jquery初始化后，定义全局变量$符号作为jquery对象的简写。</p>
+
+<p> 简单示例：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$(document).ready(function(){
+</span><span class='line'>  $("button").click(function(){
+</span><span class='line'>    $("p").hide();
+</span><span class='line'>  });
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这段代码功能：当页面里有按钮被点击后，隐藏所有的段落元素。</p>
+
+<ul>
+<li>jquery选择器</li>
+</ul>
+
+
+<p>  $(&ldquo;p&rdquo;) 选取所有 p 元素。</p>
+
+<p>  $(&lsquo;.more&rsquo;) 选取class=&ldquo;more"的元素</p>
+
+<p>  $(&lsquo;#scrumble_button&rsquo;) 选取 id=&ldquo;scrumble_button"的元素</p>
+
+<ul>
+<li>ajax请求</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  $.ajax({
+</span><span class='line'>     url: '...',
+</span><span class='line'>     type: 'POST',
+</span><span class='line'>     dataType: 'json',
+</span><span class='line'>     data: {pkgId: '1'},
+</span><span class='line'>     success:function(data){
+</span><span class='line'>         //解析返回数据
+</span><span class='line'>     }
+</span><span class='line'>     error:function(request, description, exception) {
+</span><span class='line'>
+</span><span class='line'>     }
+</span><span class='line'> })</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <a href="http://www.w3school.com.cn/jquery/">jquery中文学习地址</a></p>
+
+<ul>
+<li>js模块化</li>
+</ul>
+
+
+<p> javascript本身没有提供模块化的功能，所有的js代码都在全局命名空间运行，并且不支持依赖关系。
+ 幸好我们有第三方可框架可以给我们提供模块化功能。目前主流的模块化规范有两种。</p>
+
+<ul>
+<li>AMD</li>
+</ul>
+
+
+<p>  <a href="http://www.requirejs.cn/">RequireJS</a></p>
+
+<ul>
+<li>CMD</li>
+</ul>
+
+
+<p>  <a href="http://seajs.org/docs/">SeaJS</a></p>
+
+<p> <a href="http://justineo.github.io/singles/writing-modular-js/">js模块化参考</a></p>
+
+<ul>
+<li>Apache Tomcat使用</li>
+<li>到其<a href="http://tomcat.apache.org/">官网</a>下载最新安装包，</li>
+<li>解压后运行bin/startup.sh就会启动tomcat服务器。</li>
+<li>如果之前没有配置过java的话，你可能需要配置JAVA_HOME环境变量：
+<code>
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk***/Contents/Home
+</code></li>
+<li>将网页拷贝到webapps中，这样我们的网页就可以通过url远程访问。本例地址：<code>http://127.0.0.1:8080/wap/test\_packet/packet.html</code></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Dongle Su</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-07-23T17:21:17+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:21 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hybird/'>hybird</a>, <a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/web/'>web</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_icons_1"></a>
+	<a class="jiathis_button_icons_2"></a>
+	<a class="jiathis_button_icons_3"></a>
+	<a class="jiathis_button_icons_4"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2049579"></script>
+<!-- UY END -->
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/" title="Next Post: IOS Hybird开发 - 与OC交互">IOS Hybird开发 - 与OC交互 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li><a href='/blog/categories/github/'>github (1)</a></li><li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (2)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li><li><a href='/blog/categories/bo-ke/'>博客 (1)</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/02/04/write-a-tweak/">Write a Tweak</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">IOS Hybird开发 - 与OC交互</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">IOS Hybird开发 - Web基础</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/agdsdl">@agdsdl</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'agdsdl',
+            count: 3,
+            skip_forks: ,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section>
+  <h1>About me</h1>
+  <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1421886475&verifier=346b7a09&dpc=1"></iframe>
+  <p></p>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Dongle Su -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'dongle';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/';
+        var disqus_url = 'http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

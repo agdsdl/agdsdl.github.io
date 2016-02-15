@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>乐の博客</title>
+  <title>Write a Tweak - 乐の博客</title>
   <meta name="author" content="Dongle Su">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://agdsdl.github.io/">
+  <link rel="canonical" href="http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="乐の博客" type="application/atom+xml">
@@ -77,15 +77,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/02/04/write-a-tweak/">Write a Tweak</a></h1>
+      <h1 class="entry-title">Write a Tweak</h1>
     
     
       <p class="meta">
@@ -96,15 +93,15 @@
 
 <time class='entry-date' datetime='2016-02-04T15:38:29+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:38 pm</span></time>
         
-           | <a href="/blog/2016/02/04/write-a-tweak/#disqus_thread"
-             data-disqus-identifier="http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/">Comments</a>
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://agdsdl.github.io">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h1>编写一个iOS越狱插件(tweak)</h1>
+<div class="entry-content"><h1>编写一个iOS越狱插件(tweak)</h1>
 
 <p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
 
@@ -148,192 +145,167 @@
 
 <p>开始编写tweak！</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/02/04/write-a-tweak/">Read on &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a></h1>
-    
-    
-      <p class="meta">
-        
+<h2>新建一个tweak</h2>
 
+<p>在终端运行nic.pl, 在出现的菜单中选择想要的tweak种类。</p>
 
+<p>一般的tweak是选tweak类型。preference_bundle是可自定义的设置插件，如果你选择这种，会遇到一些奇怪的坑，下面会给出解决办法：）</p>
 
-
-<time class='entry-date' datetime='2015-07-29T18:25:47+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:25 pm</span></time>
-        
-           | <a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/#disqus_thread"
-             data-disqus-identifier="http://agdsdl.github.io/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>概要</h2>
-
-<p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
-你只需本地写好markdown文件，然后<code>rake generate</code>就可以生成博客空间的所有静态网页，
-然后<code>rake deploy</code>就可以将网站更新到服务器。
-Octopress支持两种更新方式：github和Rsync</p>
-
-<h3>github</h3>
-
-<p>github提供了免费的静态网页托管服务，你需要新建一个名为username.github.io的代码仓库，将你的网站推送到这个仓库，
-之后就可以用浏览器访问你的网站了：username.github.io
-采用github更新方式，本质上就是将Octopress生成的本地页面推送到username.github.io
-由于github是免费的，通过git管理网站，并且支持CNAME域名指向，这真是一种方便又快捷的建站方式，
-因此Octopress推荐使用这种方式，<a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a>和本博采用的也是这种方式。</p>
-
-<h3>Rsync</h3>
-
-<p>然而你可能有了自己的服务器，或者站点里包含一些动态页面，必须使用自己的服务器。
-这时你就可以用Rsync同步方法将网站同步到你的服务器。
-Rsync本质是通过ssh将文件拷贝到服务器，
-你可以看<a href="http://octopress.org/docs/deploying/rsync/">这篇官方文档</a>，这里就不深入阐述了。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">IOS Hybird开发 - 与OC交互</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-23T17:23:57+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:23 pm</span></time>
-        
-           | <a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/#disqus_thread"
-             data-disqus-identifier="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>原理：</li>
-</ul>
-
-
-<p>OC调用javascript是通过</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[webView stringByEvaluatingJavaScriptFromString:@"document.title"];</span></code></pre></td></tr></table></div></figure>
-
-
-<p>javascript调用OC一般是通过在页面中发起一个特定的url请求，然后在OC中响应</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在响应中判断此url，并做相应的动作。</p>
-
-<p>开源库：<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">https://github.com/marcuswestin/WebViewJavascriptBridge</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">IOS Hybird开发 - Web基础</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-23T17:21:17+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:21 pm</span></time>
-        
-           | <a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/#disqus_thread"
-             data-disqus-identifier="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
-他同时涉及到web开发和native开发。
-这里简单讲讲web开发。</p>
+<p>普通的tweak会包含以下文件：</p>
 
 <ul>
-<li>Web常用目录结构:</li>
+<li>control 包含deb包管理的基本信息</li>
+<li>tweak.x 插件源文件，支持c， objectiveC，<a href="http://iphonedevwiki.net/index.php/Logos">Logos语法</a></li>
+<li>XXX.plist 指明插件在哪些应用中加载</li>
+<li>layout目录 相当于iOS设备根目录，里面的文件会被对应的安装到设备的对应位置。</li>
+<li>Makefile make文件</li>
 </ul>
 
 
-<p>[name].html 页面文件</p>
+<h2>修改make文件</h2>
 
-<p>style.css 主样式文件</p>
+<p>在Makefile最上面加上这两句：</p>
 
-<p>m-style.css 移动平台主样式文件</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='Makefile'><span class='line'><span class="k">export </span><span class="nv">ARCHS</span> <span class="o">=</span> armv7 armv7s arm64
+</span><span class='line'><span class="k">export </span><span class="nv">TARGET</span> <span class="o">=</span> iphone:clang:latest:7.0
+</span></code></pre></td></tr></table></div></figure>
 
-<p>img/ 图片目录</p>
 
-<p>js/ javascript文件目录</p>
+<p>上面一句表示要编译armv7 armv7s arm64三种cpu架构，</p>
 
-<p>css/ css文件目录</p>
+<p>下面一句表示编译iPhone插件：用clang编译：用系统中最新SDK编译：目标系统是7.0（和以上）</p>
+
+<h2>编译</h2>
+
+<p>在终端输入：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>make
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译成功后，输入</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>make package install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一条命令完成编译打包和安装。</p>
+
+<p>如果有错误，请参考下面的问题。</p>
+
+<h2>遇到的问题</h2>
+
+<ul>
+<li><p>报错找不到IOSurfaceAPI.h。解决办法：rpetrich头文件包里有这个文件，手动拷贝到include目录。</p></li>
+<li><p>编译错误，报错architecture not supported。解决办法：如果是报错在.m文件或.mm文件，Theos对.m的支持不好，将其后缀改为.x文件或.xm文件一般就可以解决。</p></li>
+<li><p>link错误，Undefined symbols。解决办法：Makefile中有XXX_FRAMEWORKS = UIKit，在这后面把你用到的framework都加上。</p>
+
+<p>如果还用了其他的库，需要在Makefile中加上XXX_LDFLAGS = -lx，这里x是变量，代指库名。</p></li>
+<li><p>make package install时报错：make install requires that you set THEOS_DEVICE_IP in your environment. It is also recommended that you have public-key authentication set up for root over SSH, or you will be entering your password a lot.</p>
+
+<p>需运行<code>export THEOS_DEVICE_IP=你手机的ip地址</code>。</p>
+
+<p>后面那句话是建议你把电脑ssh 公钥设为手机的authorized_keys，这样就不用每次输密码了。</p></li>
+<li><p>在设备上插件不运行。解决办法：连上xcode看device log，是否是cpu type不支持或者其他原因。</p></li>
+<li><p>如果还有问题，请仔细看编译警告、device log，并自己打log，直到确定问题所在。</p></li>
+<li><p>tweak默认是mrc的，一定要正确保持和释放。这里不太建议改成ARC，除非<a href="http://iphonedevwiki.net/index.php/Using_ARC_in_tweaks">你知道你在干嘛</a>。</p></li>
+</ul>
+
+
+<h2>学习和模仿</h2>
+
+<p>成长离不开学习和模仿，有以下途径可以模仿：</p>
+
+<ul>
+<li>在手机上用cydia查看已安装的tweak，看他们有哪些文件，然后用iFunbox将这些文件拷贝出来学习或逆向。</li>
+<li>github上有大量开源的代码（比如大神rpetrich、DHowett等），可以看看别人是怎么写的。</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<p><a href="http://iphonedevwiki.net/index.php/Main_Page">http://iphonedevwiki.net/index.php/Main_Page</a></p>
+
+<p><a href="https://www.andyibanez.com/creating-aggregate-projects-theos-configurable-tweak/">https://www.andyibanez.com/creating-aggregate-projects-theos-configurable-tweak/</a></p>
+
+<p><a href="https://github.com/mlnlover11/TouchIDEverywhere/issues/2">https://github.com/mlnlover11/TouchIDEverywhere/issues/2</a></p>
+
+<p><a href="https://github.com/DHowett/theos/issues/73">https://github.com/DHowett/theos/issues/73</a></p>
+
+<p><a href="http://bbs.iosre.com/t/theos-make-error-unsupported-architecture/1196">http://bbs.iosre.com/t/theos-make-error-unsupported-architecture/1196</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Dongle Su</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-02-04T15:38:29+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:38 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_icons_1"></a>
+	<a class="jiathis_button_icons_2"></a>
+	<a class="jiathis_button_icons_3"></a>
+	<a class="jiathis_button_icons_4"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2049579"></script>
+<!-- UY END -->
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/" title="Previous Post: 搭建基于Octopress的博客">&laquo; 搭建基于Octopress的博客</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -406,6 +378,7 @@ Rsync本质是通过ssh将文件拷贝到服务器，
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -420,7 +393,10 @@ Rsync本质是通过ssh将文件拷贝到服务器，
       var disqus_shortname = 'dongle';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/';
+        var disqus_url = 'http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
