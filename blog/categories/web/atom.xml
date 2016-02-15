@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Web | 乐の博客]]></title>
+  <link href="http://agdsdl.github.io/blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://agdsdl.github.io/"/>
+  <updated>2016-02-15T19:07:17+08:00</updated>
+  <id>http://agdsdl.github.io/</id>
+  <author>
+    <name><![CDATA[Dongle Su]]></name>
+    <email><![CDATA[agdsdl@sina.com.cn]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IOS Hybird开发 - 与OC交互]]></title>
+    <link href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/"/>
+    <updated>2015-07-23T17:23:57+08:00</updated>
+    <id>http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu</id>
+    <content type="html"><![CDATA[<ul>
+<li>原理：</li>
+</ul>
+
+
+<p>OC调用javascript是通过
+<code>
+[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+</code></p>
+
+<p>javascript调用OC一般是通过在页面中发起一个特定的url请求，然后在OC中响应
+<code>
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+</code>
+在响应中判断此url，并做相应的动作。</p>
+
+<p>开源库：<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">https://github.com/marcuswestin/WebViewJavascriptBridge</a></p>
+
+<!-- more -->
+
+
+<ul>
+<li>WebView体验优化</li>
+</ul>
+
+
+<p>若页面结构多于一级，如这个导航顺序pageA->pageB->pageC，这时支持页面的返回就很必要。
+也就是从pageC可以返回到pageB，pageB可以返回到pageA。</p>
+
+<p>一般我们通过pushViewController来打开webViewController，而webViewController中加载pageA。
+导航到pageB，pageC都是在webViewController中进行。</p>
+
+<p>在pageC中点击导航栏的返回按钮的话，默认会退回到webViewController的上一级页面，而不是从pageC返回到pageB。
+这就需要对导航栏的返回按钮做处理。为了优化体验，还需要到滑动手势做特殊处理。</p>
+
+<p>开源库：<a href="https://github.com/agdsdl/DLPanableWebView">https://github.com/agdsdl/DLPanableWebView</a></p>
+
+<ul>
+<li>参数传递</li>
+</ul>
+
+
+<p>如上例，我们打开pageA时可以通过<code>[webView stringByEvaluatingJavaScriptFromString:@"document.title"];</code>来传参数给pageA
+如果从pageA导航到pageB，要传递一个id到pageB，这时参数要怎么传递？
+<code>stringByEvaluatingJavaScriptFromString</code>会将参数传给所有web页，用这个函数会导致我们的代码无比混乱。
+目前业界常用的方式是通过sessionStorage, localStorage。localStorage是本地存储，长期有效。sessionStorage是会话期间的存储，一旦关闭webView，存储就会消失。
+我们在项目中使用的时sessionStorage.</p>
+
+<ul>
+<li>插件化</li>
+</ul>
+
+
+<p>为了节省加载时间，提升用户体验，我们可以web功能模块打包成zip文件，一次性下载到本地。
+使用时直接从本地加载，可以大大减少加载时间，同时也能节省不少带宽。</p>
+
+<ul>
+<li>调试</li>
+</ul>
+
+
+<p>纯web页面用chrome调试最方便。</p>
+
+<p>hybird开发中的webView用safari调试即可。
+ * 在safari选项中勾选“显示开发菜单”。
+ * 在手机或模拟器打开web页面的时候，在开发菜单中选择调试的页面。</p>
+
+<ul>
+<li>一些坑</li>
+<li>stringByEvaluatingJavaScriptFromString要放在主线程调用。</li>
+<li>从OC回调到js时，不能立即弹出alert，哪怕延时0秒弹出都行。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[IOS Hybird开发 - Web基础]]></title>
+    <link href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/"/>
+    <updated>2015-07-23T17:21:17+08:00</updated>
+    <id>http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu</id>
+    <content type="html"><![CDATA[<p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
+他同时涉及到web开发和native开发。
+这里简单讲讲web开发。</p>
+
+<ul>
+<li>Web常用目录结构:</li>
+</ul>
+
+
+<p>[name].html 页面文件</p>
+
+<p>style.css 主样式文件</p>
+
+<p>m-style.css 移动平台主样式文件</p>
+
+<p>img/ 图片目录</p>
+
+<p>js/ javascript文件目录</p>
+
+<p>css/ css文件目录</p>
+
+<!-- more -->
+
+
+<ul>
+<li>html结构示意：
+<code>
+&lt;html&gt;
+&lt;head&gt;
+ &lt;meta charset="utf-8"&gt;
+ &lt;title&gt;抢红包&lt;/title&gt;
+ &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+ &lt;link href="m-style.css" rel="stylesheet" /&gt;
+ &lt;script src="../vendor/jquery.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="topbk"&gt;
+     &lt;img src="img/packet_bg@2x.png" width="100%"&gt;
+     &lt;p class="top_title"&gt;红包，先抢先得！&lt;/p&gt;
+   &lt;div class="packet_long"&gt;
+     &lt;div id="head_icon"&gt;&lt;/div&gt;
+     &lt;div id="scramble_button"&gt;光速抢&lt;/div&gt;
+     &lt;p id="packet_history"&gt;看看大家的手气&gt;&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+ &lt;div class="packet_rules"&gt;
+ &lt;p&gt;
+   红包规则：
+ &lt;/p&gt;
+ &lt;p&gt;
+   1.手机绑定用户专享； &lt;br&gt;
+   2.每个红包，每个账户限领一次；
+ &lt;/p&gt;
+&lt;/div&gt;
+ &lt;script src="nativeBridge.js"&gt;&lt;/script&gt;
+ &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></li>
+</ul>
+
+
+<p><code>&lt;head&gt;</code>段声明页面属性、包含CSS文件、js文件。head会在body前被加载，一些需要预先加载的文件可以放在head中。
+<code>&lt;body&gt;</code>段是页面内容
+<code>&lt;p class="top_title"&gt;</code>p是段落元素, <code>class="top_title"</code>是元素属性，指定了该元素的类。
+<code>&lt;div id="head_icon"&gt;</code>div是块元素， <code>id="head_icon"</code>指定了元素的id.
+<code>&lt;img src="img/packet_bg@2x.png"&gt;</code>img是图像元素, 这里通过src属性指定了该图像的图片地址。</p>
+
+<ul>
+<li>CSS结构示意：</li>
+</ul>
+
+
+<pre><code>html {
+    height: 100%;
+}
+body {
+    min-width: 320px;
+    margin: 0;padding: 0;
+    background-color:#FCECD3;
+}
+
+.topbk{
+    text-align: center;
+}
+#scramble_button{
+    position: absolute;
+
+    background: url(img/packet_button@2x.png) no-repeat;
+    background-size: 100% 100%;
+
+    top:150px;
+    left:50%;
+    width:180px;
+    height:27px;
+    margin-left:-40%;
+    padding-top:10px;
+}
+</code></pre>
+
+<p>   这是CSS样式的基本语法
+   &ldquo;XXX"是元素选择器，选择所有XXX元素。
+   &rdquo;.XXX"是类选择器，选择所有class=XXX的元素。
+   &ldquo;#XXX"是id选择器，选择所有id=XXX的元素。</p>
+
+<ul>
+<li><p>js结构示意
+js可以独立成js文件，也可以嵌入在html页面中。</p></li>
+<li><p>引用js文件:
+<code>
+ &lt;script src="../vendor/jquery.js"&gt;&lt;/script&gt;
+</code></p></li>
+<li><p>内嵌js：
+<code>
+&lt;script&gt;
+require(['app/packet_history'], function(model) {
+  model.init();
+});
+&lt;/script&gt;
+</code></p></li>
+</ul>
+
+
+<p> 因为浏览器会按顺序解析标签，将script放到body的最后可以防止script的加载阻塞整个页面的渲染。</p>
+
+<ul>
+<li>Web技术（html,css,javascript）参考网站：</li>
+</ul>
+
+
+<p> <a href="https://developer.mozilla.org/zh-CN/docs/Web">https://developer.mozilla.org/zh-CN/docs/Web</a></p>
+
+<p> <a href="http://www.w3school.com.cn/">http://www.w3school.com.cn/</a></p>
+
+<ul>
+<li>使用jquery：</li>
+</ul>
+
+
+<p> <a href="http://jquery.com/">jquery</a>是一个极通用的JavaScript库，通过他提供的选择器和封装的功能函数，可以大大简化web开发。</p>
+
+<p> jquery初始化后，定义全局变量$符号作为jquery对象的简写。</p>
+
+<p> 简单示例：
+<code>
+$(document).ready(function(){
+  $("button").click(function(){
+    $("p").hide();
+  });
+});
+</code>
+这段代码功能：当页面里有按钮被点击后，隐藏所有的段落元素。</p>
+
+<ul>
+<li>jquery选择器</li>
+</ul>
+
+
+<p>  $(&ldquo;p&rdquo;) 选取所有 p 元素。</p>
+
+<p>  $(&lsquo;.more&rsquo;) 选取class=&ldquo;more"的元素</p>
+
+<p>  $(&lsquo;#scrumble_button&rsquo;) 选取 id=&ldquo;scrumble_button"的元素</p>
+
+<ul>
+<li>ajax请求</li>
+</ul>
+
+
+<pre><code>  $.ajax({
+     url: '...',
+     type: 'POST',
+     dataType: 'json',
+     data: {pkgId: '1'},
+     success:function(data){
+         //解析返回数据
+     }
+     error:function(request, description, exception) {
+
+     }
+ })
+</code></pre>
+
+<p> <a href="http://www.w3school.com.cn/jquery/">jquery中文学习地址</a></p>
+
+<ul>
+<li>js模块化</li>
+</ul>
+
+
+<p> javascript本身没有提供模块化的功能，所有的js代码都在全局命名空间运行，并且不支持依赖关系。
+ 幸好我们有第三方可框架可以给我们提供模块化功能。目前主流的模块化规范有两种。</p>
+
+<ul>
+<li>AMD</li>
+</ul>
+
+
+<p>  <a href="http://www.requirejs.cn/">RequireJS</a></p>
+
+<ul>
+<li>CMD</li>
+</ul>
+
+
+<p>  <a href="http://seajs.org/docs/">SeaJS</a></p>
+
+<p> <a href="http://justineo.github.io/singles/writing-modular-js/">js模块化参考</a></p>
+
+<ul>
+<li>Apache Tomcat使用</li>
+<li>到其<a href="http://tomcat.apache.org/">官网</a>下载最新安装包，</li>
+<li>解压后运行bin/startup.sh就会启动tomcat服务器。</li>
+<li>如果之前没有配置过java的话，你可能需要配置JAVA_HOME环境变量：
+<code>
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk***/Contents/Home
+</code></li>
+<li>将网页拷贝到webapps中，这样我们的网页就可以通过url远程访问。本例地址：<code>http://127.0.0.1:8080/wap/test\_packet/packet.html</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

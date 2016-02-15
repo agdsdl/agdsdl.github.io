@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[乐の博客]]></title>
+  <link href="http://agdsdl.github.io/atom.xml" rel="self"/>
+  <link href="http://agdsdl.github.io/"/>
+  <updated>2016-02-15T19:07:17+08:00</updated>
+  <id>http://agdsdl.github.io/</id>
+  <author>
+    <name><![CDATA[Dongle Su]]></name>
+    <email><![CDATA[agdsdl@sina.com.cn]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[编写一个iOS越狱插件(tweak)]]></title>
+    <link href="http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/"/>
+    <updated>2016-02-04T15:38:29+08:00</updated>
+    <id>http://agdsdl.github.io/blog/2016/02/04/write-a-tweak</id>
+    <content type="html"><![CDATA[<p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
+
+<h2>关于这个插件</h2>
+
+<p>截图：</p>
+
+<p>这是个帧速计数器(FPSCounter)，方便我们查看应用的帧速，从而做出相应优化。这里不仅可以看自己的应用，也可以看系统中其他应用。</p>
+
+<p>这个插件可以直接到[这里]下载。</p>
+
+<h2>前提条件</h2>
+
+<p>一个越狱的iOS设备。</p>
+
+<p>需要越狱的设备来获取可用的CydiaSubstrate, 同时也需要越狱设备来安装和测试。</p>
+
+<h2>安装和配置Theos</h2>
+
+<p><a href="https://github.com/DHowett/theos.git">Theos</a>大大简化了tweak的编写，建议大家从Theos开始编写tweak。</p>
+
+<p>按照<a href="http://iosre.com/">《iOS应用逆向工程》</a>中所述，将Theos<a href="https://github.com/DHowett/theos.git">下载</a>下来之后，还有一系列的配置。</p>
+
+<p>我将这些配置工作写成了一个<a href="https://github.com/agdsdl/dotfiles/blob/master/init/82_jailbreak_tools.sh">脚本</a>,省去每次都做这些繁琐的配置。</p>
+
+<p>这个脚本默认Theos是下载到“个人目录/jailbreak/Opensource”，如果不想修改脚本，可用使用与脚本相同的目录。</p>
+
+<h2>配置默认路径</h2>
+
+<p>修改.bash_profile文件，将~/jailbreak/Opensource/theos/bin加入到PATH中。</p>
+
+<p>保存之后重新启动一下终端。</p>
+
+<h2>获取iOS系统头文件</h2>
+
+<p>按照<a href="http://iosre.com/">《iOS应用逆向工程》</a>的介绍，正规的获取方式是用dyld_decache从iOS设备中/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armXX将二进制文件提取出来，然后用class-dump去把头文件提取出来。</p>
+
+<p>为了方便起见，这里采用第二种方法，就是直接用<a href="https://github.com/rpetrich/iphoneheaders.git">rpetrich的头文件</a>。</p>
+
+<p>将这些头文件放到Theos的include目录下。</p>
+
+<p>开始编写tweak！</p>
+
+<!-- more -->
+
+
+<h2>新建一个tweak</h2>
+
+<p>在终端运行nic.pl, 在出现的菜单中选择想要的tweak种类。</p>
+
+<p>一般的tweak是选tweak类型。preference_bundle是可自定义的设置插件，如果你选择这种，会遇到一些奇怪的坑，下面会给出解决办法：）</p>
+
+<p>普通的tweak会包含以下文件：</p>
+
+<ul>
+<li>control 包含deb包管理的基本信息</li>
+<li>tweak.x 插件源文件，支持c， objectiveC，<a href="http://iphonedevwiki.net/index.php/Logos">Logos语法</a></li>
+<li>XXX.plist 指明插件在哪些应用中加载</li>
+<li>layout目录 相当于iOS设备根目录，里面的文件会被对应的安装到设备的对应位置。</li>
+<li>Makefile make文件</li>
+</ul>
+
+
+<h2>修改make文件</h2>
+
+<p>在Makefile最上面加上这两句：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='Makefile'><span class='line'><span class="k">export </span><span class="nv">ARCHS</span> <span class="o">=</span> armv7 armv7s arm64
+</span><span class='line'><span class="k">export </span><span class="nv">TARGET</span> <span class="o">=</span> iphone:clang:latest:7.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面一句表示要编译armv7 armv7s arm64三种cpu架构，</p>
+
+<p>下面一句表示编译iPhone插件：用clang编译：用系统中最新SDK编译：目标系统是7.0（和以上）</p>
+
+<h2>编译</h2>
+
+<p>在终端输入：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>make
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译成功后，输入</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>make package install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一条命令完成编译打包和安装。</p>
+
+<p>如果有错误，请参考下面的问题。</p>
+
+<h2>遇到的问题</h2>
+
+<ul>
+<li><p>报错找不到IOSurfaceAPI.h。解决办法：rpetrich头文件包里有这个文件，手动拷贝到include目录。</p></li>
+<li><p>编译错误，报错architecture not supported。解决办法：如果是报错在.m文件或.mm文件，Theos对.m的支持不好，将其后缀改为.x文件或.xm文件一般就可以解决。</p></li>
+<li><p>link错误，Undefined symbols。解决办法：Makefile中有XXX_FRAMEWORKS = UIKit，在这后面把你用到的framework都加上。</p>
+
+<p>如果还用了其他的库，需要在Makefile中加上XXX_LDFLAGS = -lx，这里x是变量，代指库名。</p></li>
+<li><p>make package install时报错：make install requires that you set THEOS_DEVICE_IP in your environment. It is also recommended that you have public-key authentication set up for root over SSH, or you will be entering your password a lot.</p>
+
+<p>需运行<code>export THEOS_DEVICE_IP=你手机的ip地址</code>。</p>
+
+<p>后面那句话是建议你把电脑ssh 公钥设为手机的authorized_keys，这样就不用每次输密码了。</p></li>
+<li><p>在设备上插件不运行。解决办法：连上xcode看device log，是否是cpu type不支持或者其他原因。</p></li>
+<li><p>如果还有问题，请仔细看编译警告、device log，并自己打log，直到确定问题所在。</p></li>
+<li><p>tweak默认是mrc的，一定要正确保持和释放。这里不太建议改成ARC，除非<a href="http://iphonedevwiki.net/index.php/Using_ARC_in_tweaks">你知道你在干嘛</a>。</p></li>
+</ul>
+
+
+<h2>学习和模仿</h2>
+
+<p>成长离不开学习和模仿，有以下途径可以模仿：</p>
+
+<ul>
+<li>在手机上用cydia查看已安装的tweak，看他们有哪些文件，然后用iFunbox将这些文件拷贝出来学习或逆向。</li>
+<li>github上有大量开源的代码（比如大神rpetrich、DHowett等），可以看看别人是怎么写的。</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<p><a href="http://iphonedevwiki.net/index.php/Main_Page">http://iphonedevwiki.net/index.php/Main_Page</a></p>
+
+<p><a href="https://www.andyibanez.com/creating-aggregate-projects-theos-configurable-tweak/">https://www.andyibanez.com/creating-aggregate-projects-theos-configurable-tweak/</a></p>
+
+<p><a href="https://github.com/mlnlover11/TouchIDEverywhere/issues/2">https://github.com/mlnlover11/TouchIDEverywhere/issues/2</a></p>
+
+<p><a href="https://github.com/DHowett/theos/issues/73">https://github.com/DHowett/theos/issues/73</a></p>
+
+<p><a href="http://bbs.iosre.com/t/theos-make-error-unsupported-architecture/1196">http://bbs.iosre.com/t/theos-make-error-unsupported-architecture/1196</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[搭建基于Octopress的博客]]></title>
+    <link href="http://agdsdl.github.io/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/"/>
+    <updated>2015-07-29T18:25:47+08:00</updated>
+    <id>http://agdsdl.github.io/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke</id>
+    <content type="html"><![CDATA[<h2>概要</h2>
+
+<p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
+你只需本地写好markdown文件，然后<code>rake generate</code>就可以生成博客空间的所有静态网页，
+然后<code>rake deploy</code>就可以将网站更新到服务器。
+Octopress支持两种更新方式：github和Rsync</p>
+
+<h3>github</h3>
+
+<p>github提供了免费的静态网页托管服务，你需要新建一个名为username.github.io的代码仓库，将你的网站推送到这个仓库，
+之后就可以用浏览器访问你的网站了：username.github.io
+采用github更新方式，本质上就是将Octopress生成的本地页面推送到username.github.io
+由于github是免费的，通过git管理网站，并且支持CNAME域名指向，这真是一种方便又快捷的建站方式，
+因此Octopress推荐使用这种方式，<a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a>和本博采用的也是这种方式。</p>
+
+<h3>Rsync</h3>
+
+<p>然而你可能有了自己的服务器，或者站点里包含一些动态页面，必须使用自己的服务器。
+这时你就可以用Rsync同步方法将网站同步到你的服务器。
+Rsync本质是通过ssh将文件拷贝到服务器，
+你可以看<a href="http://octopress.org/docs/deploying/rsync/">这篇官方文档</a>，这里就不深入阐述了。</p>
+
+<!-- more -->
+
+
+<h2>Octopress安装</h2>
+
+<p>如果你运行的是苹果系统（10.9）并且安装了Xcode，你可以先运行以下命令验证一下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby --version  # Should be greater than 1.9.2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果版本号大于等于1.9.2，那么唐巧的博客中下面几步是不需要的：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>brew update
+</span><span class='line'>brew install rbenv
+</span><span class='line'>brew install ruby-build
+</span><span class='line'>
+</span><span class='line'>rbenv install 1.9.3-p0
+</span><span class='line'>rbenv local 1.9.3-p0
+</span><span class='line'>rbenv rehash
+</span><span class='line'>
+</span><span class='line'>brew tap homebrew/dupes
+</span><span class='line'>brew install apple-gcc42</span></code></pre></td></tr></table></div></figure>
+
+
+<p>按照<a href="http://octopress.org/docs/setup/">官网</a>指导，只需要下面几步：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
+</span><span class='line'>cd octopress
+</span><span class='line'>
+</span><span class='line'># Next, install dependencies.
+</span><span class='line'>gem install bundler
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bundle install的时候可能会出错，这是因为国内的墙，得把RubyGems源换成taobao的源：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle config mirror.https://rubygems.org https://ruby.taobao.org</span></code></pre></td></tr></table></div></figure>
+
+
+<p>见<a href="http://ruby.taobao.org/">http://ruby.taobao.org/</a></p>
+
+<p>然后再</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样就安装好啦！</p>
+
+<h2>第一篇博客</h2>
+
+<p>现在我们先试着写一篇：（保持当前目录在octopress目前）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post["hello"]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果正确无误的话，命令行会输出：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p source/_posts
+</span><span class='line'>Creating new post: source/_posts/2015-07-27-hello.markdown</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们再依次键入以下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "hello world" &gt; source/_posts/2015-07-27-hello.markdown
+</span><span class='line'>rake generate
+</span><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们可以看到web服务已经启动，用浏览器打开127.0.0.1:4000就能看到自动生成的博客站点，怎么样，是不是很漂亮？</p>
+
+<p>在终端上按下Ctrl-C可以终止web服务。</p>
+
+<h2>配置</h2>
+
+<p>我们的web站点已经有了基本框架！可是站点的标题，边栏，风格还都是默认的，这些要怎么改？
+主要配置文件是<code>_config.yml</code>，网站标题、副标题等都在这里设置：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>url: http://agdsdl.github.io/             #网站地址
+</span><span class='line'>title: 乐の博客                            #网站标题
+</span><span class='line'>subtitle: 行而不思则罔，思而不行则怠          #网站副标题
+</span><span class='line'>author: Dongle Su                         #网站作者，通常显示在页尾和每篇文章的尾部
+</span><span class='line'>simple_search: http://google.com/search   # 搜索引擎
+</span><span class='line'>description: 一个软件工程师的呓语            #网站的描述，出现在HTML页面中的 meta 中的 description</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>导航栏配置：</h3>
+
+<p>修改<code>source\_includes\custom\navigation.html</code>，该文件是html模板，将其修改成你想要的样子。
+如：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;main-navigation&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>首页<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/blog/archives&quot;</span><span class="nt">&gt;</span>归档<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/about&quot;</span><span class="nt">&gt;</span>关于<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的about需要你新建一个页面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake new_page<span class="o">[</span><span class="s1">&#39;about&#39;</span><span class="o">]</span>  <span class="c">#创建一个页面，页面路径为source\about\index.markdown</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>侧边栏配置</h3>
+
+<p>修改<code>_config.yml</code>中：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>default_asides: <span class="o">[</span>asides/recent_posts.html, asides/github.html<span class="o">]</span>      <span class="c">#设置默认边栏包含哪些组件</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># blog_index_asides:                                                #索引页面的侧边栏</span>
+</span><span class='line'><span class="c"># post_asides:                                                      #日志页面的侧边栏(通过rake new_post 创建的)</span>
+</span><span class='line'><span class="c"># page_asides:                                                      #静态页面的侧边栏(通过rake new_page 创建的)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>添加文章分类列表到侧边栏</h3>
+
+<p>octopress没有自带的支持，所以要自己动手。
+这位网友写好了轮子并开源了出来，见<a href="https://github.com/tokkonopapa/octopress-tagcloud">https://github.com/tokkonopapa/octopress-tagcloud</a>
+将其下载下来后，将tag_cloud.rb拷贝到plugins目录，
+然后在source/_includes/custom/aside 中新建category_list.html，键入以下内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>Categories<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;categories&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    { % category_list [counter:true] % }
+</span><span class='line'>  <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>拷贝代码的话，请将{和%之间的空格去掉。</p>
+
+<p>再修改_config.yml:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>default_asides: [custom/asides/category_list.html, asides/recent_posts.html, asides/github.html]
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>将关于我们添加到侧边栏</h3>
+
+<p>octopress自带了关于我们模板：source/_includes/custom/asides/about.html
+修改后自行把它加到边栏：
+default_asides:     [custom/asides/category_list.html, asides/recent_posts.html, asides/github.html, custom/asides/about.html]</p>
+
+<p>将新浪微博秀添加到边栏的关于我们：</p>
+
+<p>在<a href="http://app.weibo.com/tool/weiboshow">http://app.weibo.com/tool/weiboshow</a>这里获得自己的秀代码，嵌入到about.html中：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>About me<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>  <span class="c">&lt;!-- 嵌入微博秀代码 --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;p&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>添加留言评论功能</h3>
+
+<ul>
+<li>octopress自带了DISQUS支持，你需要到DISQUS官网申请好账号，之后再新建一个site。</li>
+<li>新建site的入口改到了settings->admin->(汉堡菜单)Add new site</li>
+<li>最后将site短地址填到disqus_short_name中（_config.yml）</li>
+</ul>
+
+
+<h3>添加国内社交网站分享和留言评论功能</h3>
+
+<p>由于DISQUS服务器在国外，访问较慢，你可以使用国内的留言评论服务。
+这部分<a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a>已经阐述过了，
+这里不再重复，请参见唐巧的博客中"高级配置"段。</p>
+
+<h3>加入google analytics</h3>
+
+<ul>
+<li>octopress自带了google analytics支持。</li>
+<li>在<a href="http://www.google.com/analytics/">http://www.google.com/analytics/</a>创建帐号和站点。</li>
+<li>修改_config.yml的google_analytics_tracking_id字段。</li>
+<li>如果你的博客域名是github的二级域名（比如我这个agdsdl.github.io），你还需要修改source/_includes/google_analytics.html：</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>_gaq.push([&#39;_setAccount&#39;, &#39;UA-65560025-1&#39;]);
+</span><span class='line'>_gaq.push([&#39;_setDomainName&#39;,&#39;github.io&#39;]);
+</span><span class='line'>_gaq.push([&#39;_trackPageview&#39;]);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>好了，到这里我们一些基本设置都完成了，但是octopress里每个文件都是可以修改的，你可以自己修改成喜欢的样式。
+网上有很多这样的文章，你可以在文末的参考文章中进一步阅读。</p>
+
+<h2>写博客</h2>
+
+<p>用这个命令生成一个markdown文件，</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>rake new_post[post-name]
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后修改这个markdown文件。<a href="http://www.ituring.com.cn/article/23">markdown语法简略版</a>,<a href="http://wowubuntu.com/markdown/">markdown语法完整版</a></p>
+
+<h3>博客首页只显示摘要</h3>
+
+<p>在文章中插入</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="err">&lt;</span>！-- more --&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(拷贝代码的话，请将中文感叹号改成英文感叹号)</p>
+
+<p>在首页列表中文章就只显示到这个位置并在下方显示加载更多（Read on →）</p>
+
+<h2>写静态页面</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>rake new_page[super-awesome]
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>部署</h2>
+
+<p>在rake deploy之前，你必须运行：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>rake setup_github_pages
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将你的<code>Git Url</code> 输入进去完成github配置。</p>
+
+<p>之后就能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>rake generate  #生成本地网页
+</span><span class='line'>rake deploy    #推送到github
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>source管理</h2>
+
+<p>上面将生成的网页都推送到github了。可是本地的配置文件和blog源文件要怎么管理？
+用下面的命令可以将源码推送到github上的source分支：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>git add .
+</span><span class='line'>git commit -m &quot;your message&quot;
+</span><span class='line'>git push origin source
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>todo: push source to private repo.</p>
+
+<h2>参考</h2>
+
+<p><a href="http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a>
+<a href="http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html">http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html</a>
+<a href="http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/">http://yulingtianxia.com/blog/2014/04/05/macosx10-dot-9shang-yong-octopresshe-githubda-jian-ge-ren-bo-ke/</a>
+<a href="http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/">http://i.rexdf.org/blog/2014/09/26/octopressbo-ke-geng-xin-ri-zhi/</a>
+<a href="http://octopress.org/docs/">http://octopress.org/docs/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[IOS Hybird开发 - 与OC交互]]></title>
+    <link href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/"/>
+    <updated>2015-07-23T17:23:57+08:00</updated>
+    <id>http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu</id>
+    <content type="html"><![CDATA[<ul>
+<li>原理：</li>
+</ul>
+
+
+<p>OC调用javascript是通过</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[webView stringByEvaluatingJavaScriptFromString:@"document.title"];</span></code></pre></td></tr></table></div></figure>
+
+
+<p>javascript调用OC一般是通过在页面中发起一个特定的url请求，然后在OC中响应</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在响应中判断此url，并做相应的动作。</p>
+
+<p>开源库：<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">https://github.com/marcuswestin/WebViewJavascriptBridge</a></p>
+
+<!-- more -->
+
+
+<ul>
+<li>WebView体验优化</li>
+</ul>
+
+
+<p>若页面结构多于一级，如这个导航顺序pageA->pageB->pageC，这时支持页面的返回就很必要。
+也就是从pageC可以返回到pageB，pageB可以返回到pageA。</p>
+
+<p>一般我们通过pushViewController来打开webViewController，而webViewController中加载pageA。
+导航到pageB，pageC都是在webViewController中进行。</p>
+
+<p>在pageC中点击导航栏的返回按钮的话，默认会退回到webViewController的上一级页面，而不是从pageC返回到pageB。
+这就需要对导航栏的返回按钮做处理。为了优化体验，还需要到滑动手势做特殊处理。</p>
+
+<p>开源库：<a href="https://github.com/agdsdl/DLPanableWebView">https://github.com/agdsdl/DLPanableWebView</a></p>
+
+<ul>
+<li>参数传递</li>
+</ul>
+
+
+<p>如上例，我们打开pageA时可以通过<code>[webView stringByEvaluatingJavaScriptFromString:@"document.title"];</code>来传参数给pageA
+如果从pageA导航到pageB，要传递一个id到pageB，这时参数要怎么传递？
+<code>stringByEvaluatingJavaScriptFromString</code>会将参数传给所有web页，用这个函数会导致我们的代码无比混乱。
+目前业界常用的方式是通过sessionStorage, localStorage。localStorage是本地存储，长期有效。sessionStorage是会话期间的存储，一旦关闭webView，存储就会消失。
+我们在项目中使用的时sessionStorage.</p>
+
+<ul>
+<li>插件化</li>
+</ul>
+
+
+<p>为了节省加载时间，提升用户体验，我们可以web功能模块打包成zip文件，一次性下载到本地。
+使用时直接从本地加载，可以大大减少加载时间，同时也能节省不少带宽。</p>
+
+<ul>
+<li>调试</li>
+</ul>
+
+
+<p>纯web页面用chrome调试最方便。</p>
+
+<p>hybird开发中的webView用safari调试即可。
+ * 在safari选项中勾选“显示开发菜单”。
+ * 在手机或模拟器打开web页面的时候，在开发菜单中选择调试的页面。</p>
+
+<ul>
+<li>一些坑</li>
+<li>stringByEvaluatingJavaScriptFromString要放在主线程调用。</li>
+<li>从OC回调到js时，不能立即弹出alert，哪怕延时0秒弹出都行。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[IOS Hybird开发 - Web基础]]></title>
+    <link href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/"/>
+    <updated>2015-07-23T17:21:17+08:00</updated>
+    <id>http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu</id>
+    <content type="html"><![CDATA[<p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
+他同时涉及到web开发和native开发。
+这里简单讲讲web开发。</p>
+
+<ul>
+<li>Web常用目录结构:</li>
+</ul>
+
+
+<p>[name].html 页面文件</p>
+
+<p>style.css 主样式文件</p>
+
+<p>m-style.css 移动平台主样式文件</p>
+
+<p>img/ 图片目录</p>
+
+<p>js/ javascript文件目录</p>
+
+<p>css/ css文件目录</p>
+
+<!-- more -->
+
+
+<ul>
+<li>html结构示意：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;html&gt;
+</span><span class='line'>&lt;head&gt;
+</span><span class='line'>    &lt;meta charset="utf-8"&gt;
+</span><span class='line'>    &lt;title&gt;抢红包&lt;/title&gt;
+</span><span class='line'>    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+</span><span class='line'>    &lt;link href="m-style.css" rel="stylesheet" /&gt;
+</span><span class='line'>    &lt;script src="../vendor/jquery.js"&gt;&lt;/script&gt;
+</span><span class='line'>&lt;/head&gt;
+</span><span class='line'>&lt;body&gt;
+</span><span class='line'>  &lt;div class="topbk"&gt;
+</span><span class='line'>      &lt;img src="img/packet_bg@2x.png" width="100%"&gt;
+</span><span class='line'>      &lt;p class="top_title"&gt;红包，先抢先得！&lt;/p&gt;
+</span><span class='line'>      &lt;div class="packet_long"&gt;
+</span><span class='line'>        &lt;div id="head_icon"&gt;&lt;/div&gt;
+</span><span class='line'>        &lt;div id="scramble_button"&gt;光速抢&lt;/div&gt;
+</span><span class='line'>        &lt;p id="packet_history"&gt;看看大家的手气&gt;&lt;/p&gt;
+</span><span class='line'>      &lt;/div&gt;
+</span><span class='line'>  &lt;/div&gt;
+</span><span class='line'>    &lt;div class="packet_rules"&gt;
+</span><span class='line'>    &lt;p&gt;
+</span><span class='line'>      红包规则：
+</span><span class='line'>    &lt;/p&gt;
+</span><span class='line'>    &lt;p&gt;
+</span><span class='line'>      1.手机绑定用户专享； &lt;br&gt;
+</span><span class='line'>      2.每个红包，每个账户限领一次；
+</span><span class='line'>    &lt;/p&gt;
+</span><span class='line'>  &lt;/div&gt;
+</span><span class='line'>    &lt;script src="nativeBridge.js"&gt;&lt;/script&gt;
+</span><span class='line'>    &lt;script src="app.js"&gt;&lt;/script&gt;
+</span><span class='line'>&lt;/body&gt;
+</span><span class='line'>&lt;/html&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>&lt;head&gt;</code>段声明页面属性、包含CSS文件、js文件。head会在body前被加载，一些需要预先加载的文件可以放在head中。
+<code>&lt;body&gt;</code>段是页面内容
+<code>&lt;p class="top_title"&gt;</code>p是段落元素, <code>class="top_title"</code>是元素属性，指定了该元素的类。
+<code>&lt;div id="head_icon"&gt;</code>div是块元素， <code>id="head_icon"</code>指定了元素的id.
+<code>&lt;img src="img/packet_bg@2x.png"&gt;</code>img是图像元素, 这里通过src属性指定了该图像的图片地址。</p>
+
+<ul>
+<li>CSS结构示意：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>html {
+</span><span class='line'>  height: 100%;
+</span><span class='line'>}
+</span><span class='line'>body {
+</span><span class='line'>  min-width: 320px;
+</span><span class='line'>  margin: 0;padding: 0;
+</span><span class='line'>  background-color:#FCECD3;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>.topbk{
+</span><span class='line'>  text-align: center;
+</span><span class='line'>}
+</span><span class='line'>#scramble_button{
+</span><span class='line'>  position: absolute;
+</span><span class='line'>
+</span><span class='line'>  background: url(img/packet_button@2x.png) no-repeat;
+</span><span class='line'>  background-size: 100% 100%;
+</span><span class='line'>
+</span><span class='line'>  top:150px;
+</span><span class='line'>  left:50%;
+</span><span class='line'>  width:180px;
+</span><span class='line'>  height:27px;
+</span><span class='line'>  margin-left:-40%;
+</span><span class='line'>  padding-top:10px;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   这是CSS样式的基本语法
+   &ldquo;XXX"是元素选择器，选择所有XXX元素。
+   &rdquo;.XXX"是类选择器，选择所有class=XXX的元素。
+   &ldquo;#XXX"是id选择器，选择所有id=XXX的元素。</p>
+
+<ul>
+<li><p>js结构示意
+js可以独立成js文件，也可以嵌入在html页面中。</p></li>
+<li><p>引用js文件:
+<code>
+ &lt;script src="../vendor/jquery.js"&gt;&lt;/script&gt;
+</code></p></li>
+<li><p>内嵌js：
+<code>
+&lt;script&gt;
+require(['app/packet_history'], function(model) {
+  model.init();
+});
+&lt;/script&gt;
+</code></p></li>
+</ul>
+
+
+<p> 因为浏览器会按顺序解析标签，将script放到body的最后可以防止script的加载阻塞整个页面的渲染。</p>
+
+<ul>
+<li>Web技术（html,css,javascript）参考网站：</li>
+</ul>
+
+
+<p> <a href="https://developer.mozilla.org/zh-CN/docs/Web">https://developer.mozilla.org/zh-CN/docs/Web</a></p>
+
+<p> <a href="http://www.w3school.com.cn/">http://www.w3school.com.cn/</a></p>
+
+<ul>
+<li>使用jquery：</li>
+</ul>
+
+
+<p> <a href="http://jquery.com/">jquery</a>是一个极通用的JavaScript库，通过他提供的选择器和封装的功能函数，可以大大简化web开发。</p>
+
+<p> jquery初始化后，定义全局变量$符号作为jquery对象的简写。</p>
+
+<p> 简单示例：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$(document).ready(function(){
+</span><span class='line'>  $("button").click(function(){
+</span><span class='line'>    $("p").hide();
+</span><span class='line'>  });
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这段代码功能：当页面里有按钮被点击后，隐藏所有的段落元素。</p>
+
+<ul>
+<li>jquery选择器</li>
+</ul>
+
+
+<p>  $(&ldquo;p&rdquo;) 选取所有 p 元素。</p>
+
+<p>  $(&lsquo;.more&rsquo;) 选取class=&ldquo;more"的元素</p>
+
+<p>  $(&lsquo;#scrumble_button&rsquo;) 选取 id=&ldquo;scrumble_button"的元素</p>
+
+<ul>
+<li>ajax请求</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  $.ajax({
+</span><span class='line'>     url: '...',
+</span><span class='line'>     type: 'POST',
+</span><span class='line'>     dataType: 'json',
+</span><span class='line'>     data: {pkgId: '1'},
+</span><span class='line'>     success:function(data){
+</span><span class='line'>         //解析返回数据
+</span><span class='line'>     }
+</span><span class='line'>     error:function(request, description, exception) {
+</span><span class='line'>
+</span><span class='line'>     }
+</span><span class='line'> })</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <a href="http://www.w3school.com.cn/jquery/">jquery中文学习地址</a></p>
+
+<ul>
+<li>js模块化</li>
+</ul>
+
+
+<p> javascript本身没有提供模块化的功能，所有的js代码都在全局命名空间运行，并且不支持依赖关系。
+ 幸好我们有第三方可框架可以给我们提供模块化功能。目前主流的模块化规范有两种。</p>
+
+<ul>
+<li>AMD</li>
+</ul>
+
+
+<p>  <a href="http://www.requirejs.cn/">RequireJS</a></p>
+
+<ul>
+<li>CMD</li>
+</ul>
+
+
+<p>  <a href="http://seajs.org/docs/">SeaJS</a></p>
+
+<p> <a href="http://justineo.github.io/singles/writing-modular-js/">js模块化参考</a></p>
+
+<ul>
+<li>Apache Tomcat使用</li>
+<li>到其<a href="http://tomcat.apache.org/">官网</a>下载最新安装包，</li>
+<li>解压后运行bin/startup.sh就会启动tomcat服务器。</li>
+<li>如果之前没有配置过java的话，你可能需要配置JAVA_HOME环境变量：
+<code>
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk***/Contents/Home
+</code></li>
+<li>将网页拷贝到webapps中，这样我们的网页就可以通过url远程访问。本例地址：<code>http://127.0.0.1:8080/wap/test\_packet/packet.html</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
