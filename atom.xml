@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[乐の博客]]></title>
-  <link href="http://agdsdl.github.io/atom.xml" rel="self"/>
-  <link href="http://agdsdl.github.io/"/>
-  <updated>2016-02-16T18:44:37+08:00</updated>
-  <id>http://agdsdl.github.io/</id>
+  <link href="http://blog.zhidong.info/atom.xml" rel="self"/>
+  <link href="http://blog.zhidong.info/"/>
+  <updated>2016-02-17T10:57:14+08:00</updated>
+  <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
     <email><![CDATA[agdsdl@sina.com.cn]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[编写一个iOS越狱插件(tweak)]]></title>
-    <link href="http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/"/>
+    <link href="http://blog.zhidong.info/blog/2016/02/04/write-a-tweak/"/>
     <updated>2016-02-04T15:38:29+08:00</updated>
-    <id>http://agdsdl.github.io/blog/2016/02/04/write-a-tweak</id>
+    <id>http://blog.zhidong.info/blog/2016/02/04/write-a-tweak</id>
     <content type="html"><![CDATA[<p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
 
 <h2>关于这个插件</h2>
@@ -160,9 +160,9 @@
   
   <entry>
     <title type="html"><![CDATA[搭建基于Octopress的博客]]></title>
-    <link href="http://agdsdl.github.io/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/"/>
+    <link href="http://blog.zhidong.info/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/"/>
     <updated>2015-07-29T18:25:47+08:00</updated>
-    <id>http://agdsdl.github.io/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke</id>
+    <id>http://blog.zhidong.info/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke</id>
     <content type="html"><![CDATA[<h2>概要</h2>
 
 <p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
@@ -623,9 +623,9 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
   
   <entry>
     <title type="html"><![CDATA[IOS Hybird开发 - 与OC交互]]></title>
-    <link href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/"/>
+    <link href="http://blog.zhidong.info/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/"/>
     <updated>2015-07-23T17:23:57+08:00</updated>
-    <id>http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu</id>
+    <id>http://blog.zhidong.info/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu</id>
     <content type="html"><![CDATA[<ul>
 <li>原理：</li>
 </ul>
@@ -707,9 +707,9 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
   
   <entry>
     <title type="html"><![CDATA[IOS Hybird开发 - Web基础]]></title>
-    <link href="http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/"/>
+    <link href="http://blog.zhidong.info/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/"/>
     <updated>2015-07-23T17:21:17+08:00</updated>
-    <id>http://agdsdl.github.io/blog/2015/07/23/ios-hybirdkai-fa-webji-chu</id>
+    <id>http://blog.zhidong.info/blog/2015/07/23/ios-hybirdkai-fa-webji-chu</id>
     <content type="html"><![CDATA[<p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
 他同时涉及到web开发和native开发。
 这里简单讲讲web开发。</p>

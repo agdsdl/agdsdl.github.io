@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Jailbreak | 乐の博客]]></title>
-  <link href="http://agdsdl.github.io/blog/categories/jailbreak/atom.xml" rel="self"/>
-  <link href="http://agdsdl.github.io/"/>
-  <updated>2016-02-16T18:44:37+08:00</updated>
-  <id>http://agdsdl.github.io/</id>
+  <link href="http://blog.zhidong.info/blog/categories/jailbreak/atom.xml" rel="self"/>
+  <link href="http://blog.zhidong.info/"/>
+  <updated>2016-02-17T10:57:14+08:00</updated>
+  <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
     <email><![CDATA[agdsdl@sina.com.cn]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[编写一个iOS越狱插件(tweak)]]></title>
-    <link href="http://agdsdl.github.io/blog/2016/02/04/write-a-tweak/"/>
+    <link href="http://blog.zhidong.info/blog/2016/02/04/write-a-tweak/"/>
     <updated>2016-02-04T15:38:29+08:00</updated>
-    <id>http://agdsdl.github.io/blog/2016/02/04/write-a-tweak</id>
+    <id>http://blog.zhidong.info/blog/2016/02/04/write-a-tweak</id>
     <content type="html"><![CDATA[<p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
 
 <h2>关于这个插件</h2>

@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://agdsdl.github.io/sitemap.xml 
+Sitemap: http://blog.zhidong.info/sitemap.xml 
