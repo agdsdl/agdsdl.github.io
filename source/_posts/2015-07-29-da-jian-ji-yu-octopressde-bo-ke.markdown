@@ -3,7 +3,7 @@ layout: post
 title: "搭建基于Octopress的博客"
 date: 2015-07-29 10:25:47
 comments: true
-categories: [Octopress, 博客, github]
+categories: [Octopress]
 ---
 
 ##概要
@@ -16,7 +16,7 @@ github提供了免费的静态网页托管服务，你需要新建一个名为us
 之后就可以用浏览器访问你的网站了：username.github.io
 采用github更新方式，本质上就是将Octopress生成的本地页面推送到username.github.io
 由于github是免费的，通过git管理网站，并且支持CNAME域名指向，这真是一种方便又快捷的建站方式，
-因此Octopress推荐使用这种方式，[唐巧的博客](http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/)和本博采用的也是这种方式。
+因此Octopress推荐使用这种方式，[唐巧的博客](http://blog.devtang.com/2012/02/10/setup-blog-based-on-github/)和本博采用的也是这种方式。
 ###Rsync
 然而你可能有了自己的服务器，或者站点里包含一些动态页面，必须使用自己的服务器。
 这时你就可以用Rsync同步方法将网站同步到你的服务器。
@@ -292,7 +292,7 @@ bundle install
 
 ##参考
 
-http://www.devtang.com/blog/2012/02/10/setup-blog-based-on-github/
+http://blog.devtang.com/2012/02/10/setup-blog-based-on-github/
 
 http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html
 

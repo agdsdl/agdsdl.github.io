@@ -3,7 +3,7 @@ layout: post
 title: "编写一个iOS越狱插件(tweak)"
 date: 2016-02-04 15:38:29 +0800
 comments: true
-categories: 
+categories: [iOS, Jailbreak]
 ---
 
 
@@ -99,23 +99,23 @@ make package install
 ## 遇到的问题
 
 - 报错找不到IOSurfaceAPI.h。解决办法：rpetrich头文件包里有这个文件，手动拷贝到include目录。
-  
+
 - 编译错误，报错architecture not supported。解决办法：如果是报错在.m文件或.mm文件，Theos对.m的支持不好，将其后缀改为.x文件或.xm文件一般就可以解决。
-  
+
 - link错误，Undefined symbols。解决办法：Makefile中有XXX_FRAMEWORKS = UIKit，在这后面把你用到的framework都加上。
-  
+
   如果还用了其他的库，需要在Makefile中加上XXX_LDFLAGS = -lx，这里x是变量，代指库名。
-  
+
 - make package install时报错：make install requires that you set THEOS_DEVICE_IP in your environment. It is also recommended that you have public-key authentication set up for root over SSH, or you will be entering your password a lot.
-  
+
   需运行```export THEOS_DEVICE_IP=你手机的ip地址```。
-  
+
   后面那句话是建议你把电脑ssh 公钥设为手机的authorized_keys，这样就不用每次输密码了。
-  
+
 - 在设备上插件不运行。解决办法：连上xcode看device log，是否是cpu type不支持或者其他原因。
-  
+
 - 如果还有问题，请仔细看编译警告、device log，并自己打log，直到确定问题所在。
-  
+
 - tweak默认是mrc的，一定要正确保持和释放。这里不太建议改成ARC，除非[你知道你在干嘛](http://iphonedevwiki.net/index.php/Using_ARC_in_tweaks)。
 
 ## 学习和模仿

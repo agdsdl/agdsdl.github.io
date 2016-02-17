@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://agdsdl.github.io
+url: http://blog.zhidong.info
 title: 乐の博客
 subtitle: 行而不思则罔，思而不行则怠
 author: Dongle Su
 simple_search: https://www.google.com/search
-description: 一个软件工程师的呓语
+description: 知冬的后花园
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
