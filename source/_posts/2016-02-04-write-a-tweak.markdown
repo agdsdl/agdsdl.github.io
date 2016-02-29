@@ -10,12 +10,14 @@ categories: [iOS, Jailbreak]
 折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。
 
 ## 关于这个插件
-
-截图：
-
 这是个帧速计数器(FPSCounter)，方便我们查看应用的帧速，从而做出相应优化。这里不仅可以看自己的应用，也可以看系统中其他应用。
 
-这个插件可以直接到[这里]下载。
+###截图：
+![preview1](https://github.com/agdsdl/fpscounter/blob/master/images/preview1.jpg?raw=true)
+![preview2](https://github.com/agdsdl/fpscounter/blob/master/images/preview2.jpg?raw=true)
+###如何安装
+- 在Cydia中搜索`FPSCounter`.(你的Cydia中必须有BigBoss源)
+- 或者到[source code](https://github.com/agdsdl/fpscounter)下载后自行编译安装。
 
 ## 前提条件
 
