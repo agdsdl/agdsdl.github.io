@@ -4,7 +4,7 @@
   <title><![CDATA[乐の博客]]></title>
   <link href="http://blog.zhidong.info/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-02-17T11:11:43+08:00</updated>
+  <updated>2016-02-29T12:20:20+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -22,11 +22,20 @@
 
 <h2>关于这个插件</h2>
 
-<p>截图：</p>
-
 <p>这是个帧速计数器(FPSCounter)，方便我们查看应用的帧速，从而做出相应优化。这里不仅可以看自己的应用，也可以看系统中其他应用。</p>
 
-<p>这个插件可以直接到[这里]下载。</p>
+<h3>截图：</h3>
+
+<p><img src="https://github.com/agdsdl/fpscounter/blob/master/images/preview1.jpg?raw=true" alt="preview1" />
+<img src="https://github.com/agdsdl/fpscounter/blob/master/images/preview2.jpg?raw=true" alt="preview2" /></p>
+
+<h3>如何安装</h3>
+
+<ul>
+<li>在Cydia中搜索<code>FPSCounter</code>.(你的Cydia中必须有BigBoss源)</li>
+<li>或者到<a href="https://github.com/agdsdl/fpscounter">source code</a>下载后自行编译安装。</li>
+</ul>
+
 
 <h2>前提条件</h2>
 
