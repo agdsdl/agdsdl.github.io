@@ -4,7 +4,7 @@
   <title><![CDATA[乐の博客]]></title>
   <link href="http://blog.zhidong.info/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-03-04T15:37:21+08:00</updated>
+  <updated>2016-03-04T15:42:02+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -37,8 +37,7 @@
 
 <h2>动态方法解析</h2>
 
-<p>一个OC方法的实现本质上就是一个简单的c函数，这个c函数至少要有self和_cmd两个参数。你可以用<code>class_addMethod</code>来添加一个方法到类中。
-如下c函数：</p>
+<p>一个OC方法的实现本质上就是一个简单的c函数，这个c函数至少要有self和_cmd两个参数。比如下面这个c函数：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -48,7 +47,7 @@
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>可以这样使用：</p>
+<p>可以用<code>class_addMethod</code>来添加到现有的类中：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
