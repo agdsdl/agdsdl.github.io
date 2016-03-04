@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>乐の博客</title>
+  <title>Objective-c Runtime 拾遗 - 乐の博客</title>
   <meta name="author" content="Dongle Su">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.zhidong.info/">
+  <link rel="canonical" href="http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="乐の博客" type="application/atom+xml">
@@ -73,15 +73,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/04/objc-runtime-pickup/">Objective-c Runtime 拾遗</a></h1>
+      <h1 class="entry-title">Objective-c Runtime 拾遗</h1>
     
     
       <p class="meta">
@@ -97,7 +94,7 @@
   </header>
 
 
-  <div class="entry-content"><h2>动态添加类</h2>
+<div class="entry-content"><h2>动态添加类</h2>
 
 <p>我们通过<code>objc_allocateClassPair</code>、<code>class_addIvar</code>、<code>class_addMethod</code>、<code>objc_registerClassPair</code>来动态添加类。</p>
 
@@ -161,266 +158,141 @@
 
 <p><a href="!https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html">参考</a></p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/03/04/objc-runtime-pickup/">Read on &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/02/04/write-a-tweak/">编写一个iOS越狱插件(tweak)</a></h1>
-    
-    
-      <p class="meta">
-        
+<h2>消息转发</h2>
 
-
-
-
-<time class='entry-date' datetime='2016-02-04T15:38:29+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:38 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
-
-<h2>关于这个插件</h2>
-
-<p>这是个帧速计数器(FPSCounter)，方便我们查看应用的帧速，从而做出相应优化。这里不仅可以看自己的应用，也可以看系统中其他应用。</p>
-
-<h3>截图：</h3>
-
-<p><img src="https://github.com/agdsdl/fpscounter/blob/master/images/preview1.jpg?raw=true" alt="preview1" />
-<img src="https://github.com/agdsdl/fpscounter/blob/master/images/preview2.jpg?raw=true" alt="preview2" /></p>
-
-<h3>如何安装</h3>
-
-<ul>
-<li>在Cydia中搜索<code>FPSCounter</code>.(你的Cydia中必须有BigBoss源)</li>
-<li>或者到<a href="https://github.com/agdsdl/fpscounter">source code</a>下载后自行编译安装。</li>
-</ul>
-
-
-<h2>前提条件</h2>
-
-<p>一个越狱的iOS设备。</p>
-
-<p>需要越狱的设备来获取可用的CydiaSubstrate, 同时也需要越狱设备来安装和测试。</p>
-
-<h2>安装和配置Theos</h2>
-
-<p><a href="https://github.com/DHowett/theos.git">Theos</a>大大简化了tweak的编写，建议大家从Theos开始编写tweak。</p>
-
-<p>按照<a href="http://iosre.com/">《iOS应用逆向工程》</a>中所述，将Theos<a href="https://github.com/DHowett/theos.git">下载</a>下来之后，还有一系列的配置。</p>
-
-<p>我将这些配置工作写成了一个<a href="https://github.com/agdsdl/dotfiles/blob/master/init/82_jailbreak_tools.sh">脚本</a>,省去每次都做这些繁琐的配置。</p>
-
-<p>这个脚本默认Theos是下载到“个人目录/jailbreak/Opensource”，如果不想修改脚本，可用使用与脚本相同的目录。</p>
-
-<h2>配置默认路径</h2>
-
-<p>修改.bash_profile文件，将~/jailbreak/Opensource/theos/bin加入到PATH中。</p>
-
-<p>保存之后重新启动一下终端。</p>
-
-<h2>获取iOS系统头文件</h2>
-
-<p>按照<a href="http://iosre.com/">《iOS应用逆向工程》</a>的介绍，正规的获取方式是用dyld_decache从iOS设备中/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armXX将二进制文件提取出来，然后用class-dump去把头文件提取出来。</p>
-
-<p>为了方便起见，这里采用第二种方法，就是直接用<a href="https://github.com/rpetrich/iphoneheaders.git">rpetrich的头文件</a>。</p>
-
-<p>将这些头文件放到Theos的include目录下。</p>
-
-<p>开始编写tweak！</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/02/04/write-a-tweak/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-29T18:25:47+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:25 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>概要</h2>
-
-<p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
-你只需本地写好markdown文件，然后<code>rake generate</code>就可以生成博客空间的所有静态网页，
-然后<code>rake deploy</code>就可以将网站更新到服务器。
-Octopress支持两种更新方式：github和Rsync</p>
-
-<h3>github</h3>
-
-<p>github提供了免费的静态网页托管服务，你需要新建一个名为username.github.io的代码仓库，将你的网站推送到这个仓库，
-之后就可以用浏览器访问你的网站了：username.github.io
-采用github更新方式，本质上就是将Octopress生成的本地页面推送到username.github.io
-由于github是免费的，通过git管理网站，并且支持CNAME域名指向，这真是一种方便又快捷的建站方式，
-因此Octopress推荐使用这种方式，<a href="http://blog.devtang.com/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a>和本博采用的也是这种方式。</p>
-
-<h3>Rsync</h3>
-
-<p>然而你可能有了自己的服务器，或者站点里包含一些动态页面，必须使用自己的服务器。
-这时你就可以用Rsync同步方法将网站同步到你的服务器。
-Rsync本质是通过ssh将文件拷贝到服务器，
-你可以看<a href="http://octopress.org/docs/deploying/rsync/">这篇官方文档</a>，这里就不深入阐述了。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">IOS Hybird开发 - 与OC交互</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-23T17:23:57+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:23 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>原理：</li>
-</ul>
-
-
-<p>OC调用javascript是通过</p>
+<p>系统发送消息给一个对象时，如果这个对象不能响应这个消息，在报错之前，系统会调用这个对象的<code>forwardInvocation:</code> 让它有机会来处理这个消息。
+顾名思义就是消息转发，通过将消息转发给另一个对象，使得一个对象可以模拟另外一个对象的能力：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[webView stringByEvaluatingJavaScriptFromString:@"document.title"];</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/*
+</span><span class='line'>forwardInvocation 需要MethodSignature来创建NSInvocation对象，因此这个方法也要提供。
+</span><span class='line'>*/
+</span><span class='line'>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector  
+</span><span class='line'>{  
+</span><span class='line'>    NSMethodSignature* signature = [super methodSignatureForSelector:aSelector];  
+</span><span class='line'>    if (signature==nil) {  
+</span><span class='line'>        signature = [someObj methodSignatureForSelector:aSelector];  
+</span><span class='line'>    }  
+</span><span class='line'>    NSUInteger argCount = [signature numberOfArguments];  
+</span><span class='line'>    for (NSInteger i=0 ; i&lt;argCount ; i++) {  
+</span><span class='line'>    }  
+</span><span class='line'>      
+</span><span class='line'>    return signature;  
+</span><span class='line'>}  
+</span><span class='line'>
+</span><span class='line'>- (void)forwardInvocation:(NSInvocation *)anInvocation
+</span><span class='line'>{
+</span><span class='line'>    if ([someOtherObject respondsToSelector:
+</span><span class='line'>            [anInvocation selector]])
+</span><span class='line'>        [anInvocation invokeWithTarget:someOtherObject];
+</span><span class='line'>    else
+</span><span class='line'>        [super forwardInvocation:anInvocation];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>javascript调用OC一般是通过在页面中发起一个特定的url请求，然后在OC中响应</p>
+<p>你可以用这种机制来模拟多继承。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</span></code></pre></td></tr></table></div></figure>
+<p>要真实的模拟多继承，你还必须重写这些方法：<code>respondsToSelector:</code> 、<code>isKindOfClass:</code>、<code>instancesRespondToSelector:</code>、如果继承对象中有协议，还需重写<code>conformsToProtocol:</code></p>
 
+<h2>类型编码</h2>
 
-<p>在响应中判断此url，并做相应的动作。</p>
+<p>辅助OC runtime，编译器将参数及返回类型编码成字符串，并与方法selector关联。</p>
 
-<p>开源库：<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">https://github.com/marcuswestin/WebViewJavascriptBridge</a></p>
+<p>@encode是个编译器操作符，用来获取一个类型的编码。所有可以用sizeof操作符的类型，都可以用@encode来获取它的类型。</p>
 
+<p>常见编码见<a href="!https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html">官方文档</a></p>
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">Read on &rarr;</a>
-    </footer>
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Dongle Su</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-03-04T14:55:42+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:55 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/runtime/'>runtime</a>
+  
+</span>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">IOS Hybird开发 - Web基础</a></h1>
+      <div class="sharing">
+  
+  
+  
+  
+  
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_icons_1"></a>
+	<a class="jiathis_button_icons_2"></a>
+	<a class="jiathis_button_icons_3"></a>
+	<a class="jiathis_button_icons_4"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2049579"></script>
+<!-- UY END -->
+
+  
+</div>
+
     
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-23T17:21:17+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:21 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
-他同时涉及到web开发和native开发。
-这里简单讲讲web开发。</p>
-
-<ul>
-<li>Web常用目录结构:</li>
-</ul>
-
-
-<p>[name].html 页面文件</p>
-
-<p>style.css 主样式文件</p>
-
-<p>m-style.css 移动平台主样式文件</p>
-
-<p>img/ 图片目录</p>
-
-<p>js/ javascript文件目录</p>
-
-<p>css/ css文件目录</p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/02/04/write-a-tweak/" title="Previous Post: 编写一个iOS越狱插件(tweak)">&laquo; 编写一个iOS越狱插件(tweak)</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -467,6 +339,7 @@ Rsync本质是通过ssh将文件拷贝到服务器，
 
   
 </aside>
+
 
     </div>
   </div>

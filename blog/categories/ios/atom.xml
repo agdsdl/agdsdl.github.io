@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ios | 乐の博客]]></title>
   <link href="http://blog.zhidong.info/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-02-29T12:20:20+08:00</updated>
+  <updated>2016-03-04T15:14:30+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -12,6 +12,136 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-c Runtime 拾遗]]></title>
+    <link href="http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup/"/>
+    <updated>2016-03-04T14:55:42+08:00</updated>
+    <id>http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup</id>
+    <content type="html"><![CDATA[<h2>动态添加类</h2>
+
+<p>我们通过<code>objc_allocateClassPair</code>、<code>class_addIvar</code>、<code>class_addMethod</code>、<code>objc_registerClassPair</code>来动态添加类。</p>
+
+<p><code>objc_registerClassPair</code> 其中除了设置类状态，做的最重要的事是生成<code>ivar_layout</code>(在支持GC的情况下，所以ios中是没有这一步的)，<code>ivar_layout</code>保存了类strong变量的内存视图，runtime依赖他来管理strong变量。</p>
+
+<p><code>ivar_layout</code>的结构<a href="!http://blog.sunnyxx.com/2015/09/13/class-ivar-layout/">阳神的博客里</a>有描述，这里就不写了。</p>
+
+<p><code>objc_registerClassPair</code>之后，类的<code>instanceSize</code>已经确定，这个新类已经可以投入使用，这时就不允许调用<code>class_addIvar</code>了。</p>
+
+<p><code>class_addIvar</code>主要是对<code>ivar_list</code>链表的操作，并相应的增加<code>instanceSize</code>。</p>
+
+<p>参考：
+<a href="http://www.opensource.apple.com/tarballs/objc4/">Apple 源码</a></p>
+
+<h2>动态方法解析</h2>
+
+<p>一个OC方法的实现本质上就是一个简单的c函数，这个c函数至少要有self和_cmd两个参数。你可以用<code>class_addMethod</code>来添加一个方法到类中。
+如下c函数：
+<code>
+void dynamicMethodIMP(id self, SEL _cmd) {
+    // implementation ....
+}
+</code>
+可以这样使用：
+<code>
+@implementation MyClass
++ (BOOL)resolveInstanceMethod:(SEL)aSEL
+{
+    if (aSEL == @selector(resolveThisMethodDynamically)) {
+          class_addMethod([self class], aSEL, (IMP) dynamicMethodIMP, "v@:");
+          return YES;
+    }
+    return [super resolveInstanceMethod:aSEL];
+}
+@end
+</code>
+<code>resolveInstanceMethod</code>和<code>resolveClassMethod</code>可以用来动态提供一个方法实现。</p>
+
+<p>OC runtime做消息转发（Message Forwarding）时，在调用<code>respondsToSelector:</code>和<code>instancesRespondToSelector:</code>之前，会先调用上面两个方法，让你有机会来动态添加方法实现。</p>
+
+<p>OC支持一种动态属性允许你动态提供它的实现方法。
+<code>
+@dynamic propertyName;
+</code></p>
+
+<p><a href="!https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html">参考</a></p>
+
+<!-- more -->
+
+
+<h2>消息转发</h2>
+
+<p>系统发送消息给一个对象时，如果这个对象不能响应这个消息，在报错之前，系统会调用这个对象的<code>forwardInvocation:</code> 让它有机会来处理这个消息。
+顾名思义就是消息转发，通过将消息转发给另一个对象，使得一个对象可以模拟另外一个对象的能力：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/&lt;em&gt;
+</span><span class='line'>forwardInvocation 需要MethodSignature来创建NSInvocation对象，因此这个方法也要提供。
+</span><span class='line'>&lt;/em&gt;/
+</span><span class='line'>- (NSMethodSignature &lt;em&gt;)methodSignatureForSelector:(SEL)aSelector&lt;br/&gt;
+</span><span class='line'>{&lt;br/&gt;
+</span><span class='line'>    NSMethodSignature&lt;/em&gt; signature = [super methodSignatureForSelector:aSelector];&lt;br/&gt;
+</span><span class='line'>    if (signature==nil) {&lt;br/&gt;
+</span><span class='line'>        signature = [someObj methodSignatureForSelector:aSelector];&lt;br/&gt;
+</span><span class='line'>    }&lt;br/&gt;
+</span><span class='line'>    NSUInteger argCount = [signature numberOfArguments];&lt;br/&gt;
+</span><span class='line'>    for (NSInteger i=0 ; i&lt;argCount ; i++) {&lt;br/&gt;
+</span><span class='line'>    }&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;return signature;  
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;}&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;ul&gt;
+</span><span class='line'>&lt;li&gt;(void)forwardInvocation:(NSInvocation *)anInvocation
+</span><span class='line'>{
+</span><span class='line'>  if ([someOtherObject respondsToSelector:
+</span><span class='line'>          [anInvocation selector]])
+</span><span class='line'>      [anInvocation invokeWithTarget:someOtherObject];
+</span><span class='line'>  else
+</span><span class='line'>      [super forwardInvocation:anInvocation];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+你可以用这种机制来模拟多继承。</li>
+</ul>
+
+
+<p>要真实的模拟多继承，你还必须重写这些方法：<code>respondsToSelector:</code> 、<code>isKindOfClass:</code>、<code>instancesRespondToSelector:</code>、如果继承对象中有协议，还需重写<code>conformsToProtocol:</code></p>
+
+<h2>类型编码</h2>
+
+<p>辅助OC runtime，编译器将参数及返回类型编码成字符串，并与方法selector关联。</p>
+
+<p>@encode是个编译器操作符，用来获取一个类型的编码。所有可以用sizeof操作符的类型，都可以用@encode来获取它的类型。</p>
+
+<p>常见编码见<a href="!https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html">官方文档</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[编写一个iOS越狱插件(tweak)]]></title>
