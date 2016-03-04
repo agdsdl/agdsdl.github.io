@@ -9,7 +9,7 @@
   <meta name="author" content="Dongle Su">
 
   
-  <meta name="description" content="动态添加类 我们通过objc_allocateClassPair、class_addIvar、class_addMethod、objc_registerClassPair来动态添加类。 objc_registerClassPair 其中除了设置类状态，做的最重要的事是生成ivar_layout( &hellip;">
+  <meta name="description" content="关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。 动态添加类 我们通过objc_allocateClassPair、class_addIvar、class_addMethod、objc_registerClassPair来动态添加类。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,13 +94,15 @@
   </header>
 
 
-<div class="entry-content"><h2>动态添加类</h2>
+<div class="entry-content"><p>关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。</p>
+
+<h2>动态添加类</h2>
 
 <p>我们通过<code>objc_allocateClassPair</code>、<code>class_addIvar</code>、<code>class_addMethod</code>、<code>objc_registerClassPair</code>来动态添加类。</p>
 
 <p><code>objc_registerClassPair</code> 其中除了设置类状态，做的最重要的事是生成<code>ivar_layout</code>(在支持GC的情况下，所以ios中是没有这一步的)，<code>ivar_layout</code>保存了类strong变量的内存视图，runtime依赖他来管理strong变量。</p>
 
-<p><code>ivar_layout</code>的结构<a href="!http://blog.sunnyxx.com/2015/09/13/class-ivar-layout/">阳神的博客里</a>有描述，这里就不写了。</p>
+<p><code>ivar_layout</code>的结构<a href="!http://blog.sunnyxx.com/2015/09/13/class-ivar-layout/">阳神的博客里</a>有描述，这里就不重复了。</p>
 
 <p><code>objc_registerClassPair</code>之后，类的<code>instanceSize</code>已经确定，这个新类已经可以投入使用，这时就不允许调用<code>class_addIvar</code>了。</p>
 
@@ -156,7 +158,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>@dynamic propertyName;</span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="!https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html">参考</a></p>
+<p><a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html">参考</a></p>
 
 <!-- more -->
 
@@ -222,11 +224,11 @@
 
 <h2>类型编码</h2>
 
-<p>辅助OC runtime，编译器将参数及返回类型编码成字符串，并与方法selector关联。</p>
+<p>是OC runtime所依赖的重要类型信息，编译器将参数及返回类型编码成字符串，并与方法selector关联。</p>
 
 <p>@encode是个编译器操作符，用来获取一个类型的编码。所有可以用sizeof操作符的类型，都可以用@encode来获取它的类型。</p>
 
-<p>常见编码见<a href="!https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html">官方文档</a></p>
+<p>常见编码见<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html">官方文档</a></p>
 </div>
 
 
