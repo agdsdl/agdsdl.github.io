@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ios | 乐の博客]]></title>
   <link href="http://blog.zhidong.info/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-03-07T21:02:53+08:00</updated>
+  <updated>2016-03-07T21:35:24+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -35,7 +35,7 @@
 
 <p>对象的<code>isa</code>链会一直指向哪里?见下图:</p>
 
-<p><img src="./images/class-diagram.jpg" alt="objc 关系图" /></p>
+<p><img src="/images/class-diagram.jpg" alt="objc 关系图" /></p>
 
 <p>(图片来自<a href="http://blog.devtang.com/2013/10/15/objective-c-object-model/">http://blog.devtang.com/2013/10/15/objective-c-object-model/</a>)</p>
 
