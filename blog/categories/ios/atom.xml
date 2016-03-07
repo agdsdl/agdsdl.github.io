@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ios | 乐の博客]]></title>
   <link href="http://blog.zhidong.info/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-03-04T15:42:02+08:00</updated>
+  <updated>2016-03-07T20:54:16+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -12,6 +12,318 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Class-swizzling, Isa-swizzling and KVO]]></title>
+    <link href="http://blog.zhidong.info/blog/2016/03/07/class-swizzling/"/>
+    <updated>2016-03-07T20:44:20+08:00</updated>
+    <id>http://blog.zhidong.info/blog/2016/03/07/class-swizzling</id>
+    <content type="html"><![CDATA[<p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
+
+<p><code>RACSwizzleClass</code>中通过判断<code>[obj class]</code>和 <code>object_getClass(obj)</code>是否相同来执行不同的逻辑。
+然而<code>[obj class]</code>和<code>object_getClass(obj)</code>有什么区别？他们不同到底意味着什么？</p>
+
+<p>为此查阅了objc runtime的源代码，并整理了相关代码：<a href="https://gist.github.com/agdsdl/a22666c8f64fed0dbbf5">get class 相关代码</a></p>
+
+<p>结论:</p>
+
+<ul>
+<li>对于一个普通的obj（不是class），<code>[obj class]</code>和 <code>object_getClass(obj)</code>会返回一样的结果，就是该对象所属的类。</li>
+<li>对于一个class，<code>[aclass class]</code>还是会返回该class，而<code>object_getClass(aclass)</code>会溯本归源返回aclass的<code>isa</code>，一般是返回该类的<code>meta class</code></li>
+</ul>
+
+
+<p>对象的<code>isa</code>链会一直指向哪里?见下图:</p>
+
+<p><img src="./images/class-diagram.jpg" alt="objc 关系图" /></p>
+
+<p>(图片来自<a href="http://blog.devtang.com/2013/10/15/objective-c-object-model/">http://blog.devtang.com/2013/10/15/objective-c-object-model/</a>)</p>
+
+<p>既然对于一个普通的obj（不是class），<code>[obj class]</code>和 <code>object_getClass(obj)</code>会返回一样的结果，那么<code>RACSwizzleClass</code>为什么要做相等性判断？</p>
+
+<p>在苹果的文档中稍稍提到了一些：
+<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html">Key-Value Observing Implementation Details</a></p>
+
+<p>简单的说，系统的KVO，是用<code>isa-swizzling</code>实现的。</p>
+
+<p><code>isa</code>指针，指向对象所属的类，类里面存储的是方法列表及其他一些信息。</p>
+
+<p>当你给一个对象添加了observer之后，系统会修改该对象的<code>isa</code>指针，使其指向一个中间类（中间类重写了setting方法以实现KVO），这时的<code>isa</code>，就不是指向对象实际的类了。</p>
+
+<p>所以，你应该用<code>class</code>(系统同时重写了class方法使其返回对象原来的类)方法，而不是<code>isa</code>(object_getClass)来取得对象所属的类。</p>
+
+<!-- more -->
+
+
+<p>写了个小小的测试程序来验证：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)test{
+</span><span class='line'>    //Now create an instance &lsquo;myobj&rsquo; of class &lsquo;MyObject&rsquo;
+</span><span class='line'>    NSLog(@&ldquo;Now create an instance &lsquo;myobj&rsquo; of class &lsquo;MyObject&rsquo;&rdquo;);
+</span><span class='line'>    MyObject *myobj = [[MyObject alloc] init];
+</span><span class='line'>    Class aclass = [myobj class];
+</span><span class='line'>    NSLog(@&ldquo;[myobj class] returns:%@(%p)&rdquo;, aclass, aclass);
+</span><span class='line'>    Class aclass2 = object_getClass(myobj);
+</span><span class='line'>    NSLog(@&ldquo;object_getClass(myobj) returns:%@(%p)&rdquo;, aclass2, aclass2);
+</span><span class='line'>    Class aclass3 = object_getClass([myobj class]);
+</span><span class='line'>    NSLog(@&ldquo;object_getClass([myobj class]) returns:%@(%p)&rdquo;, aclass3, aclass3);&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;//Now recursively call 'class'
+</span><span class='line'>NSLog(@"Now recursively call 'class'");
+</span><span class='line'>id obj = myobj;
+</span><span class='line'>for (int i=0; i&lt;4; i++) {
+</span><span class='line'>    Class aclass = [obj class];
+</span><span class='line'>    obj = aclass;
+</span><span class='line'>    NSLog(@"pass%d [obj class] returns %@(%p)", i+1, aclass, aclass);
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>// Now recursively call 'object_getClass'.
+</span><span class='line'>NSLog(@"Now recursively call 'object_getClass'");
+</span><span class='line'>obj = myobj;
+</span><span class='line'>for (int i=0; i&lt;4; i++) {
+</span><span class='line'>    Class aclass = object_getClass(obj);
+</span><span class='line'>    obj = aclass;
+</span><span class='line'>    NSLog(@"pass%d object_getClass(obj) returns %@(%p)", i+1, aclass, aclass);
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>// Now add KVO to myobj.
+</span><span class='line'>NSLog(@"Now add KVO to myobj.");
+</span><span class='line'>[myobj addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
+</span><span class='line'>NSLog(@"After KVO. [myobj class] returns %@(%p)", [myobj class], [myobj class]);
+</span><span class='line'>NSLog(@"After KVO. object_getClass(myobj) returns %@(%p)", object_getClass(myobj), object_getClass(myobj));
+</span><span class='line'>
+</span><span class='line'>myobj.title = @"Hello, this is new title!";
+</span><span class='line'>
+</span><span class='line'>// Now remove KVO of myobj.
+</span><span class='line'>NSLog(@"Now remove KVO of myobj.");
+</span><span class='line'>[myobj removeObserver:self forKeyPath:@"title"];
+</span><span class='line'>NSLog(@"KVO removed. [myobj class] returns %@(%p)", [myobj class], [myobj class]);
+</span><span class='line'>NSLog(@"KVO removed. object_getClass(myobj) returns %@(%p)", object_getClass(myobj), object_getClass(myobj));
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;}
+</span><span class='line'>- (void)observeValueForKeyPath:(NSString &lt;em&gt;)keyPath ofObject:(id)object change:(NSDictionary&lt;NSString *,id&gt; &lt;/em&gt;)change context:(void *)context{
+</span><span class='line'>    if ([keyPath isEqualToString:@&ldquo;title&rdquo;]) {
+</span><span class='line'>        NSLog(@&ldquo;KVO title changed:%@&rdquo;, [change objectForKey:NSKeyValueChangeNewKey]);
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>运行结果：
+</span><span class='line'>&lt;/code&gt;
+</span><span class='line'>2016-03-07 17:19:09.702 testOC[3925:131380] Now create an instance &lsquo;myobj&rsquo; of class &lsquo;MyObject&rsquo;
+</span><span class='line'>2016-03-07 17:19:09.704 testOC[3925:131380] [myobj class] returns:MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.704 testOC[3925:131380] object_getClass(myobj) returns:MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.704 testOC[3925:131380] object_getClass([myobj class]) returns:MyObject(0x1065200f8)
+</span><span class='line'>2016-03-07 17:19:09.705 testOC[3925:131380] Now recursively call &lsquo;class&rsquo;
+</span><span class='line'>2016-03-07 17:19:09.705 testOC[3925:131380] pass1 [obj class] returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.705 testOC[3925:131380] pass2 [obj class] returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.705 testOC[3925:131380] pass3 [obj class] returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.705 testOC[3925:131380] pass4 [obj class] returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.705 testOC[3925:131380] Now recursively call &lsquo;object_getClass&rsquo;
+</span><span class='line'>2016-03-07 17:19:09.706 testOC[3925:131380] pass1 object_getClass(obj) returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.706 testOC[3925:131380] pass2 object_getClass(obj) returns MyObject(0x1065200f8)
+</span><span class='line'>2016-03-07 17:19:09.706 testOC[3925:131380] pass3 object_getClass(obj) returns NSObject(0x106d7b198)
+</span><span class='line'>2016-03-07 17:19:09.712 testOC[3925:131380] pass4 object_getClass(obj) returns NSObject(0x106d7b198)
+</span><span class='line'>2016-03-07 17:19:09.712 testOC[3925:131380] Now add KVO to myobj.
+</span><span class='line'>2016-03-07 17:19:09.713 testOC[3925:131380] After KVO. [myobj class] returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.713 testOC[3925:131380] After KVO. object_getClass(myobj) returns NSKVONotifying_MyObject(0x7fc66b61f000)
+</span><span class='line'>2016-03-07 17:19:09.713 testOC[3925:131380] KVO title changed:Hello, this is new title!
+</span><span class='line'>2016-03-07 17:19:09.713 testOC[3925:131380] Now remove KVO of myobj.
+</span><span class='line'>2016-03-07 17:19:09.714 testOC[3925:131380] KVO removed. [myobj class] returns MyObject(0x106520120)
+</span><span class='line'>2016-03-07 17:19:09.714 testOC[3925:131380] KVO removed. object_getClass(myobj) returns MyObject(0x106520120)</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>总结：</h2>
+
+<p>苹果的<code>isa-swizzling</code>（也就是<code>class-swizzling</code>）会更改对象的<code>isa</code>指针，并且会重写<code>class</code>方法以隐藏class已经改变的事实。。。</p>
+
+<p>如果有兴趣，这还一篇文档教你怎么自己实现KVO：
+<a href="http://tech.glowing.com/cn/implement-kvo/">如何自己动手实现 KVO</a></p>
+
+<p>在搜索的时候，搜到了stackoverflow上类似的一个问题，然而点赞最多的回答并不准确，我在后面附上了准确的回答：
+<a href="http://stackoverflow.com/questions/15906130/object-getclassobj-and-obj-class-give-different-results/35037484#35037484">object_getClass(obj) and [obj class] give different results</a></p>
+
+<h2>附注释后代码</h2>
+
+<p>现在<code>RACSwizzleClass</code>的代码就可以读得通了，附上注释如下：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// file NSObject+RACSelectorSignal.m
+</span><span class='line'>static Class RACSwizzleClass(NSObject &lt;em&gt;self) {
+</span><span class='line'>    Class statedClass = self.class; // 声明的类
+</span><span class='line'>    Class baseClass = object_getClass(self); // 实际指向的类
+</span><span class='line'>    NSString &lt;/em&gt;className = NSStringFromClass(baseClass);&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;if ([className hasSuffix:RACSubclassSuffix]) {
+</span><span class='line'>    return baseClass; // 已经swizzle过了
+</span><span class='line'>} else if (statedClass != baseClass) {
+</span><span class='line'>// 正如下面的注释，该对象估计被类似KVO之类的isa-swizzle过了，只能swizzle它的ForwardInvocation方法了
+</span><span class='line'>
+</span><span class='line'>    // If the class is already lying about what it is, it's probably a KVO
+</span><span class='line'>    // dynamic subclass or something else that we shouldn't subclass
+</span><span class='line'>    // ourselves.
+</span><span class='line'>    //
+</span><span class='line'>    // Just swizzle -forwardInvocation: in-place. Since the object's class
+</span><span class='line'>    // was almost certainly dynamically changed, we shouldn't see another of
+</span><span class='line'>    // these classes in the hierarchy.
+</span><span class='line'>    //
+</span><span class='line'>    // Additionally, swizzle -respondsToSelector: because the default
+</span><span class='line'>    // implementation may be ignorant of methods added to this class.
+</span><span class='line'>    @synchronized (swizzledClasses()) {
+</span><span class='line'>        if (![swizzledClasses() containsObject:className]) {
+</span><span class='line'>            RACSwizzleForwardInvocation(baseClass);
+</span><span class='line'>            RACSwizzleRespondsToSelector(baseClass);
+</span><span class='line'>            [swizzledClasses() addObject:className];
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    return baseClass;
+</span><span class='line'>}
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  // 没有isa-swizzle过的，直接isa-swizzle
+</span><span class='line'>    const char *subclassName = [className stringByAppendingString:RACSubclassSuffix].UTF8String;
+</span><span class='line'>    Class subclass = objc_getClass(subclassName);&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;if (subclass == nil) {
+</span><span class='line'>    subclass = [RACObjCRuntime createClass:subclassName inheritingFromClass:baseClass];
+</span><span class='line'>    if (subclass == nil) return nil;
+</span><span class='line'>
+</span><span class='line'>    RACSwizzleForwardInvocation(subclass);
+</span><span class='line'>    RACSwizzleRespondsToSelector(subclass);
+</span><span class='line'>    objc_registerClassPair(subclass);
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>object_setClass(self, subclass);
+</span><span class='line'>return subclass;
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;}</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Objective-c Runtime 拾遗]]></title>

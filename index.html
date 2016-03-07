@@ -9,7 +9,8 @@
   <meta name="author" content="Dongle Su">
 
   
-  <meta name="description" content="关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。 动态添加类 我们通过objc_allocateClassPair、class_addIvar、class_addMethod、objc_registerClassPair来动态添加类。 &hellip;">
+  <meta name="description" content="看ReactiveCocoa源码的时候，被RACSwizzleClass卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。 RACSwizzleClass中通过判断[obj class]和 object_getClass(obj)是否相同来执行不同的逻辑。
+然而[ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +76,72 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/07/class-swizzling/">Class-swizzling, Isa-swizzling and KVO</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-07T20:44:20+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:44 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
+
+<p><code>RACSwizzleClass</code>中通过判断<code>[obj class]</code>和 <code>object_getClass(obj)</code>是否相同来执行不同的逻辑。
+然而<code>[obj class]</code>和<code>object_getClass(obj)</code>有什么区别？他们不同到底意味着什么？</p>
+
+<p>为此查阅了objc runtime的源代码，并整理了相关代码：<a href="https://gist.github.com/agdsdl/a22666c8f64fed0dbbf5">get class 相关代码</a></p>
+
+<p>结论:</p>
+
+<ul>
+<li>对于一个普通的obj（不是class），<code>[obj class]</code>和 <code>object_getClass(obj)</code>会返回一样的结果，就是该对象所属的类。</li>
+<li>对于一个class，<code>[aclass class]</code>还是会返回该class，而<code>object_getClass(aclass)</code>会溯本归源返回aclass的<code>isa</code>，一般是返回该类的<code>meta class</code></li>
+</ul>
+
+
+<p>对象的<code>isa</code>链会一直指向哪里?见下图:</p>
+
+<p><img src="./images/class-diagram.jpg" alt="objc 关系图" /></p>
+
+<p>(图片来自<a href="http://blog.devtang.com/2013/10/15/objective-c-object-model/">http://blog.devtang.com/2013/10/15/objective-c-object-model/</a>)</p>
+
+<p>既然对于一个普通的obj（不是class），<code>[obj class]</code>和 <code>object_getClass(obj)</code>会返回一样的结果，那么<code>RACSwizzleClass</code>为什么要做相等性判断？</p>
+
+<p>在苹果的文档中稍稍提到了一些：
+<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html">Key-Value Observing Implementation Details</a></p>
+
+<p>简单的说，系统的KVO，是用<code>isa-swizzling</code>实现的。</p>
+
+<p><code>isa</code>指针，指向对象所属的类，类里面存储的是方法列表及其他一些信息。</p>
+
+<p>当你给一个对象添加了observer之后，系统会修改该对象的<code>isa</code>指针，使其指向一个中间类（中间类重写了setting方法以实现KVO），这时的<code>isa</code>，就不是指向对象实际的类了。</p>
+
+<p>所以，你应该用<code>class</code>(系统同时重写了class方法使其返回对象原来的类)方法，而不是<code>isa</code>(object_getClass)来取得对象所属的类。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/03/07/class-swizzling/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -427,12 +494,16 @@ Rsync本质是通过ssh将文件拷贝到服务器，
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (4)</a></li><li><a href='/blog/categories/jailbreak/'>jailbreak (1)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/runtime/'>runtime (1)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li>
+    <li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (5)</a></li><li><a href='/blog/categories/jailbreak/'>jailbreak (1)</a></li><li><a href='/blog/categories/kvo/'>kvo (1)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/runtime/'>runtime (2)</a></li><li><a href='/blog/categories/swizzle/'>swizzle (1)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li>
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/07/class-swizzling/">Class-swizzling, Isa-swizzling and KVO</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/03/04/objc-runtime-pickup/">Objective-c Runtime 拾遗</a>
@@ -448,10 +519,6 @@ Rsync本质是通过ssh将文件拷贝到服务器，
     
       <li class="post">
         <a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">IOS Hybird开发 - 与OC交互</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">IOS Hybird开发 - Web基础</a>
       </li>
     
   </ul>
