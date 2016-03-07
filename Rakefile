@@ -268,8 +268,8 @@ multitask :push do
     Bundler.with_clean_env { system "git push origin #{deploy_branch}" }
     puts "\n## Github Pages deploy complete"
 
-    system "git remote add gitcafe https://gitcafe.com/agdsdl/agdsdl.git >> /dev/null 2>&1"
-    system "git push -u gitcafe master:gitcafe-pages"
+    system "git remote add coding https://git.coding.net/zhidong/agdsdl.git >> /dev/null 2>&1"
+    system "git push -u coding master:coding-pages"
   end
 end
 
