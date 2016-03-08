@@ -5,12 +5,13 @@ date: 2016-03-07 20:44:20 +0800
 comments: true
 categories: [iOS, runtime, KVO]
 ---
-
+##前言
 看`ReactiveCocoa`源码的时候，被`RACSwizzleClass`卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。
 
 `RACSwizzleClass`中通过判断`[obj class] `和 `object_getClass(obj)`是否相同来执行不同的逻辑。
 然而`[obj class]`和`object_getClass(obj)`有什么区别？他们不同到底意味着什么？
 
+##class和object_getClass
 为此查阅了objc runtime的源代码，并整理了相关代码：[get class 相关代码](https://gist.github.com/agdsdl/a22666c8f64fed0dbbf5)
 
 结论:
@@ -24,18 +25,21 @@ categories: [iOS, runtime, KVO]
 
 (图片来自http://blog.devtang.com/2013/10/15/objective-c-object-model/)
 
+图中的`Root class`一般是`NSObject`，当你不停的调用`object_getClass`，你最终会获取到`NSObject`的`meta class`。
+
+##isa-swizzling
 既然对于一个普通的obj（不是class），`[obj class] `和 `object_getClass(obj)`会返回一样的结果，那么`RACSwizzleClass`为什么要做相等性判断？
 
 在苹果的文档中稍稍提到了一些：
 [Key-Value Observing Implementation Details](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html)
 
-简单的说，系统的KVO，是用`isa-swizzling`实现的。
+简单的说：
 
-`isa`指针，指向对象所属的类，类里面存储的是方法列表及其他一些信息。
+- 系统的KVO，是用`isa-swizzling`实现的。
+- `isa`指针，指向对象所属的类，类里面存储的是方法列表及其他一些信息。
+- 当你给一个对象添加了observer之后，系统会修改该对象的`isa`指针，使其指向一个中间类（中间类重写了setting方法以实现KVO），这时的`isa`，就不是指向对象实际的类了。
 
-当你给一个对象添加了observer之后，系统会修改该对象的`isa`指针，使其指向一个中间类（中间类重写了setting方法以实现KVO），这时的`isa`，就不是指向对象实际的类了。
-
-所以，你应该用`class`(系统同时重写了class方法使其返回对象原来的类)方法，而不是`isa`(object_getClass)来取得对象所属的类。
+所以，你应该用`class`方法(因为系统同时重写了class方法使其返回对象原来的类)，而不是`isa`(object_getClass)来取得对象所属的类。
 
 <!-- more -->
 写了个小小的测试程序来验证：
