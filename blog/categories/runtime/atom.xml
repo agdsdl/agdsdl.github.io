@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Runtime | 乐の博客]]></title>
   <link href="http://blog.zhidong.info/blog/categories/runtime/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-03-08T09:55:43+08:00</updated>
+  <updated>2016-03-08T10:36:02+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -18,10 +18,14 @@
     <link href="http://blog.zhidong.info/blog/2016/03/07/class-swizzling/"/>
     <updated>2016-03-07T20:44:20+08:00</updated>
     <id>http://blog.zhidong.info/blog/2016/03/07/class-swizzling</id>
-    <content type="html"><![CDATA[<p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
+    <content type="html"><![CDATA[<h2>前言</h2>
+
+<p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
 
 <p><code>RACSwizzleClass</code>中通过判断<code>[obj class]</code>和 <code>object_getClass(obj)</code>是否相同来执行不同的逻辑。
 然而<code>[obj class]</code>和<code>object_getClass(obj)</code>有什么区别？他们不同到底意味着什么？</p>
+
+<h2>class和object_getClass</h2>
 
 <p>为此查阅了objc runtime的源代码，并整理了相关代码：<a href="https://gist.github.com/agdsdl/a22666c8f64fed0dbbf5">get class 相关代码</a></p>
 
@@ -39,18 +43,25 @@
 
 <p>(图片来自<a href="http://blog.devtang.com/2013/10/15/objective-c-object-model/">http://blog.devtang.com/2013/10/15/objective-c-object-model/</a>)</p>
 
+<p>图中的<code>Root class</code>一般是<code>NSObject</code>，当你不停的调用<code>object_getClass</code>，你最终会获取到<code>NSObject</code>的<code>meta class</code>。</p>
+
+<h2>isa-swizzling</h2>
+
 <p>既然对于一个普通的obj（不是class），<code>[obj class]</code>和 <code>object_getClass(obj)</code>会返回一样的结果，那么<code>RACSwizzleClass</code>为什么要做相等性判断？</p>
 
 <p>在苹果的文档中稍稍提到了一些：
 <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOImplementation.html">Key-Value Observing Implementation Details</a></p>
 
-<p>简单的说，系统的KVO，是用<code>isa-swizzling</code>实现的。</p>
+<p>简单的说：</p>
 
-<p><code>isa</code>指针，指向对象所属的类，类里面存储的是方法列表及其他一些信息。</p>
+<ul>
+<li>系统的KVO，是用<code>isa-swizzling</code>实现的。</li>
+<li><code>isa</code>指针，指向对象所属的类，类里面存储的是方法列表及其他一些信息。</li>
+<li>当你给一个对象添加了observer之后，系统会修改该对象的<code>isa</code>指针，使其指向一个中间类（中间类重写了setting方法以实现KVO），这时的<code>isa</code>，就不是指向对象实际的类了。</li>
+</ul>
 
-<p>当你给一个对象添加了observer之后，系统会修改该对象的<code>isa</code>指针，使其指向一个中间类（中间类重写了setting方法以实现KVO），这时的<code>isa</code>，就不是指向对象实际的类了。</p>
 
-<p>所以，你应该用<code>class</code>(系统同时重写了class方法使其返回对象原来的类)方法，而不是<code>isa</code>(object_getClass)来取得对象所属的类。</p>
+<p>所以，你应该用<code>class</code>方法(因为系统同时重写了class方法使其返回对象原来的类)，而不是<code>isa</code>(object_getClass)来取得对象所属的类。</p>
 
 <!-- more -->
 
