@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Nodejs 环境搭建 - 乐の博客</title>
+  <meta name="author" content="Dongle Su">
+
+  
+  <meta name="description" content="开始学习Nodejs了，在这里记录一些轨迹吧。 工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
+Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。
+vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和debug， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="乐の博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-65560025-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">乐の博客</a></h1>
+  
+    <h2>行而不思则罔，思而不行则怠</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="blog.zhidong.info">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Nodejs 环境搭建</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-15T12:37:13+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:37 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>开始学习Nodejs了，在这里记录一些轨迹吧。</p>
+
+<p>工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
+Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。
+vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和debug，并且它本身也是nodejs编写的。
+当然如果你发现有更好用的工具，也请告诉我。</p>
+
+<h2>nodejs安装</h2>
+
+<p>安装Nodejs，我是从这里看的：<a href="http://nqdeng.github.io/7-days-nodejs/">七天学会nodejs</a>, 还有<a href="https://nodejs.org/">官网</a>.</p>
+
+<h2>下载和安装</h2>
+
+<p>下载地址：<a href="http://code.visualstudio.com/">http://code.visualstudio.com/</a></p>
+
+<h2>配置命令行</h2>
+
+<p>配置命令行，使其可以用命令行这样启动：（仅限MacOS）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vscode .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>MacOS系统：</h3>
+
+<p>在.bash_profile文件中加入下面代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">function</span> vscode <span class="o">()</span> <span class="o">{</span> <span class="nv">VSCODE_CWD</span><span class="o">=</span><span class="s2">&quot;$PWD&quot;</span> open -n -b <span class="s2">&quot;com.microsoft.VSCode&quot;</span> --args <span class="nv">$*</span><span class="p">;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面代码中的<code>com.microsoft.VSCode</code>是应用的<code>bundle identifier</code>。查看方法：
+1. 在应用上点击右键，选择“显示包内容”。
+2. 打开<code>Contents</code>目录中的<code>info.plist</code>
+3. 其中<code>CFBundleIdentifier</code>键下面的值就是应用的<code>bundle identifier</code>。
+其实这种方式适用于大多数Mac应用，比如你可以参考我的<a href="https://github.com/agdsdl/dotfiles/blob/master/source/52_editors.sh">文件</a></p>
+
+<h3>其他系统：</h3>
+
+<p>请参考<a href="https://code.visualstudio.com/docs/editor/setup">https://code.visualstudio.com/docs/editor/setup</a></p>
+
+<h2>配置代码提示和自动完成</h2>
+
+<p>vscode使用TypeScript定义文件（比如<code>node.d.ts</code>）来提供代码提示和自动完成功能。
+vscode推荐使用typings安装和管理TypeScript文件。
+首先使用下面代码安装typings：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g typings
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这将在全局安装typings。</p>
+
+<p>然后，在你的工程目录下，安装你需要的TypeScript文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>typings install node --ambient
+</span><span class='line'>typings install express --ambient
+</span><span class='line'><span class="c"># 或者合并成一行：</span>
+</span><span class='line'><span class="c"># typings install node express --ambient</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完之后，应该就可以看到代码提示了。</p>
+
+<h2>更多配置选项</h2>
+
+<p>在工程目录下新建一个文件<code>jsconfig.json</code>，填入以下内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;compilerOptions&quot;</span>: <span class="o">{</span>
+</span><span class='line'>        <span class="s2">&quot;target&quot;</span>: <span class="s2">&quot;es5&quot;</span>,
+</span><span class='line'>        <span class="s2">&quot;module&quot;</span>: <span class="s2">&quot;commonjs&quot;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。</p>
+
+<!-- more -->
+
+
+<h2>调试</h2>
+
+<h3>Launch</h3>
+
+<p>点击<img src="https://code.visualstudio.com/images/nodejs_debugicon.png" alt="按钮" />切换到调试视图。
+在调试视图的顶部，点击小齿轮，选择Launch，这会创建一个launch.json配置文件。你可能要改的是<code>program</code>字段，其他默认即可。
+在代码行的左侧点击来下断点，然后点击启动或者F5即可启动调试：
+<img src="https://code.visualstudio.com/images/nodejs_debugsession.png" alt="调试图" /></p>
+
+<h3>Attach</h3>
+
+<p>如果要Attach到现有node程序，那么你需要这样启动node：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>node --debug program.js <span class="c">#debug模式启动</span>
+</span><span class='line'>node --debug-brk program.js <span class="c">#debug模式启动并停在第一行</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后将<code>launch.json</code>配置文件改成这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;version&quot;</span>: <span class="s2">&quot;0.2.0&quot;</span>,
+</span><span class='line'>    <span class="s2">&quot;configurations&quot;</span>: <span class="o">[</span>
+</span><span class='line'>        <span class="o">{</span>
+</span><span class='line'>            <span class="s2">&quot;name&quot;</span>: <span class="s2">&quot;Attach to Node&quot;</span>,
+</span><span class='line'>            <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;node&quot;</span>,
+</span><span class='line'>            <span class="s2">&quot;request&quot;</span>: <span class="s2">&quot;attach&quot;</span>,
+</span><span class='line'>            <span class="s2">&quot;port&quot;</span>: 5858
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">]</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上。</p>
+
+<p>参考：
+<a href="https://code.visualstudio.com/docs/runtimes/nodejs">https://code.visualstudio.com/docs/runtimes/nodejs</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Dongle Su</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-03-15T12:37:13+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:37 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/vscode/'>vscode</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_icons_1"></a>
+	<a class="jiathis_button_icons_2"></a>
+	<a class="jiathis_button_icons_3"></a>
+	<a class="jiathis_button_icons_4"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2049579"></script>
+<!-- UY END -->
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/07/class-swizzling/" title="Previous Post: class-swizzling, isa-swizzling and KVO">&laquo; class-swizzling, isa-swizzling and KVO</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (5)</a></li><li><a href='/blog/categories/jailbreak/'>jailbreak (1)</a></li><li><a href='/blog/categories/kvo/'>kvo (1)</a></li><li><a href='/blog/categories/nodejs/'>nodejs (1)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/runtime/'>runtime (2)</a></li><li><a href='/blog/categories/vscode/'>vscode (1)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/07/class-swizzling/">Class-swizzling, Isa-swizzling and KVO</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/04/objc-runtime-pickup/">Objective-c Runtime 拾遗</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/04/write-a-tweak/">编写一个iOS越狱插件(tweak)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>About me</h1>
+  <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1421886475&verifier=346b7a09&dpc=1"></iframe>
+  <p></p>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Dongle Su -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

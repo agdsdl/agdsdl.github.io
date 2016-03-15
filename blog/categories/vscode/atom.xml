@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Vscode | 乐の博客]]></title>
+  <link href="http://blog.zhidong.info/blog/categories/vscode/atom.xml" rel="self"/>
+  <link href="http://blog.zhidong.info/"/>
+  <updated>2016-03-15T12:41:24+08:00</updated>
+  <id>http://blog.zhidong.info/</id>
+  <author>
+    <name><![CDATA[Dongle Su]]></name>
+    <email><![CDATA[agdsdl@sina.com.cn]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Nodejs 环境搭建]]></title>
+    <link href="http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools/"/>
+    <updated>2016-03-15T12:37:13+08:00</updated>
+    <id>http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools</id>
+    <content type="html"><![CDATA[<p>开始学习Nodejs了，在这里记录一些轨迹吧。</p>
+
+<p>工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
+Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。
+vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和debug，并且它本身也是nodejs编写的。
+当然如果你发现有更好用的工具，也请告诉我。</p>
+
+<h2>nodejs安装</h2>
+
+<p>安装Nodejs，我是从这里看的：<a href="http://nqdeng.github.io/7-days-nodejs/">七天学会nodejs</a>, 还有<a href="https://nodejs.org/">官网</a>.</p>
+
+<h2>下载和安装</h2>
+
+<p>下载地址：<a href="http://code.visualstudio.com/">http://code.visualstudio.com/</a></p>
+
+<h2>配置命令行</h2>
+
+<p>配置命令行，使其可以用命令行这样启动：（仅限MacOS）
+<code>bash
+vscode .
+</code></p>
+
+<h3>MacOS系统：</h3>
+
+<p>在.bash_profile文件中加入下面代码：
+<code>
+function vscode () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $*; }
+</code>
+上面代码中的<code>com.microsoft.VSCode</code>是应用的<code>bundle identifier</code>。查看方法：
+1. 在应用上点击右键，选择“显示包内容”。
+2. 打开<code>Contents</code>目录中的<code>info.plist</code>
+3. 其中<code>CFBundleIdentifier</code>键下面的值就是应用的<code>bundle identifier</code>。
+其实这种方式适用于大多数Mac应用，比如你可以参考我的<a href="https://github.com/agdsdl/dotfiles/blob/master/source/52_editors.sh">文件</a></p>
+
+<h3>其他系统：</h3>
+
+<p>请参考<a href="https://code.visualstudio.com/docs/editor/setup">https://code.visualstudio.com/docs/editor/setup</a></p>
+
+<h2>配置代码提示和自动完成</h2>
+
+<p>vscode使用TypeScript定义文件（比如<code>node.d.ts</code>）来提供代码提示和自动完成功能。
+vscode推荐使用typings安装和管理TypeScript文件。
+首先使用下面代码安装typings：
+<code>bash
+npm install -g typings
+</code>
+这将在全局安装typings。</p>
+
+<p>然后，在你的工程目录下，安装你需要的TypeScript文件：
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>typings install node <span class="p">&amp;</span>ndash<span class="p">;</span>ambient
+</span><span class='line'>typings install express <span class="p">&amp;</span>ndash<span class="p">;</span>ambient&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;或者合并成一行：&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;typings install node express <span class="p">&amp;</span>ndash<span class="p">;</span>ambient&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;安装完之后，应该就可以看到代码提示了。
+</span><span class='line'>
+</span><span class='line'><span class="c">##更多配置选项</span>
+</span><span class='line'>在工程目录下新建一个文件<span class="sb">`</span>jsconfig.json<span class="sb">`</span>，填入以下内容：
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="o">{</span>
+</span><span class='line'>    <span class="p">&amp;</span>ldquo<span class="p">;</span>compilerOptions<span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="o">{</span>
+</span><span class='line'>        <span class="p">&amp;</span>ldquo<span class="p">;</span>target<span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="p">&amp;</span>ldquo<span class="p">;</span>es5<span class="p">&amp;</span>rdquo<span class="p">;</span>,
+</span><span class='line'>        <span class="p">&amp;</span>ldquo<span class="p">;</span>module<span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="p">&amp;</span>ldquo<span class="p">;</span>commonjs<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。</p>
+
+<!-- more -->
+
+
+<h2>调试</h2>
+
+<h3>Launch</h3>
+
+<p>点击<img src="https://code.visualstudio.com/images/nodejs_debugicon.png" alt="按钮" />切换到调试视图。
+在调试视图的顶部，点击小齿轮，选择Launch，这会创建一个launch.json配置文件。你可能要改的是<code>program</code>字段，其他默认即可。
+在代码行的左侧点击来下断点，然后点击启动或者F5即可启动调试：
+<img src="https://code.visualstudio.com/images/nodejs_debugsession.png" alt="调试图" /></p>
+
+<h3>Attach</h3>
+
+<p>如果要Attach到现有node程序，那么你需要这样启动node：
+<code>
+node --debug program.js #debug模式启动
+node --debug-brk program.js #debug模式启动并停在第一行
+</code>
+然后将<code>launch.json</code>配置文件改成这样的：
+<code>
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Node",
+            "type": "node",
+            "request": "attach",
+            "port": 5858
+        }
+    ]
+}
+</code>
+以上。</p>
+
+<p>参考：
+<a href="https://code.visualstudio.com/docs/runtimes/nodejs">https://code.visualstudio.com/docs/runtimes/nodejs</a></p>
+]]></content>
+  </entry>
+  
+</feed>

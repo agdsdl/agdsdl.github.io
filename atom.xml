@@ -4,7 +4,7 @@
   <title><![CDATA[乐の博客]]></title>
   <link href="http://blog.zhidong.info/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-03-08T10:36:02+08:00</updated>
+  <updated>2016-03-15T12:41:24+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -12,6 +12,160 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Nodejs 环境搭建]]></title>
+    <link href="http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools/"/>
+    <updated>2016-03-15T12:37:13+08:00</updated>
+    <id>http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools</id>
+    <content type="html"><![CDATA[<p>开始学习Nodejs了，在这里记录一些轨迹吧。</p>
+
+<p>工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
+Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。
+vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和debug，并且它本身也是nodejs编写的。
+当然如果你发现有更好用的工具，也请告诉我。</p>
+
+<h2>nodejs安装</h2>
+
+<p>安装Nodejs，我是从这里看的：<a href="http://nqdeng.github.io/7-days-nodejs/">七天学会nodejs</a>, 还有<a href="https://nodejs.org/">官网</a>.</p>
+
+<h2>下载和安装</h2>
+
+<p>下载地址：<a href="http://code.visualstudio.com/">http://code.visualstudio.com/</a></p>
+
+<h2>配置命令行</h2>
+
+<p>配置命令行，使其可以用命令行这样启动：（仅限MacOS）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vscode .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>MacOS系统：</h3>
+
+<p>在.bash_profile文件中加入下面代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">function</span> vscode <span class="o">()</span> <span class="o">{</span> <span class="nv">VSCODE_CWD</span><span class="o">=</span><span class="s2">&quot;$PWD&quot;</span> open -n -b <span class="s2">&quot;com.microsoft.VSCode&quot;</span> --args <span class="nv">$*</span><span class="p">;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面代码中的<code>com.microsoft.VSCode</code>是应用的<code>bundle identifier</code>。查看方法：
+1. 在应用上点击右键，选择“显示包内容”。
+2. 打开<code>Contents</code>目录中的<code>info.plist</code>
+3. 其中<code>CFBundleIdentifier</code>键下面的值就是应用的<code>bundle identifier</code>。
+其实这种方式适用于大多数Mac应用，比如你可以参考我的<a href="https://github.com/agdsdl/dotfiles/blob/master/source/52_editors.sh">文件</a></p>
+
+<h3>其他系统：</h3>
+
+<p>请参考<a href="https://code.visualstudio.com/docs/editor/setup">https://code.visualstudio.com/docs/editor/setup</a></p>
+
+<h2>配置代码提示和自动完成</h2>
+
+<p>vscode使用TypeScript定义文件（比如<code>node.d.ts</code>）来提供代码提示和自动完成功能。
+vscode推荐使用typings安装和管理TypeScript文件。
+首先使用下面代码安装typings：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g typings
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这将在全局安装typings。</p>
+
+<p>然后，在你的工程目录下，安装你需要的TypeScript文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>typings install node --ambient
+</span><span class='line'>typings install express --ambient
+</span><span class='line'><span class="c"># 或者合并成一行：</span>
+</span><span class='line'><span class="c"># typings install node express --ambient</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完之后，应该就可以看到代码提示了。</p>
+
+<h2>更多配置选项</h2>
+
+<p>在工程目录下新建一个文件<code>jsconfig.json</code>，填入以下内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;compilerOptions&quot;</span>: <span class="o">{</span>
+</span><span class='line'>        <span class="s2">&quot;target&quot;</span>: <span class="s2">&quot;es5&quot;</span>,
+</span><span class='line'>        <span class="s2">&quot;module&quot;</span>: <span class="s2">&quot;commonjs&quot;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。</p>
+
+<!-- more -->
+
+
+<h2>调试</h2>
+
+<h3>Launch</h3>
+
+<p>点击<img src="https://code.visualstudio.com/images/nodejs_debugicon.png" alt="按钮" />切换到调试视图。
+在调试视图的顶部，点击小齿轮，选择Launch，这会创建一个launch.json配置文件。你可能要改的是<code>program</code>字段，其他默认即可。
+在代码行的左侧点击来下断点，然后点击启动或者F5即可启动调试：
+<img src="https://code.visualstudio.com/images/nodejs_debugsession.png" alt="调试图" /></p>
+
+<h3>Attach</h3>
+
+<p>如果要Attach到现有node程序，那么你需要这样启动node：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>node --debug program.js <span class="c">#debug模式启动</span>
+</span><span class='line'>node --debug-brk program.js <span class="c">#debug模式启动并停在第一行</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后将<code>launch.json</code>配置文件改成这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;version&quot;</span>: <span class="s2">&quot;0.2.0&quot;</span>,
+</span><span class='line'>    <span class="s2">&quot;configurations&quot;</span>: <span class="o">[</span>
+</span><span class='line'>        <span class="o">{</span>
+</span><span class='line'>            <span class="s2">&quot;name&quot;</span>: <span class="s2">&quot;Attach to Node&quot;</span>,
+</span><span class='line'>            <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;node&quot;</span>,
+</span><span class='line'>            <span class="s2">&quot;request&quot;</span>: <span class="s2">&quot;attach&quot;</span>,
+</span><span class='line'>            <span class="s2">&quot;port&quot;</span>: 5858
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">]</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上。</p>
+
+<p>参考：
+<a href="https://code.visualstudio.com/docs/runtimes/nodejs">https://code.visualstudio.com/docs/runtimes/nodejs</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Class-swizzling, Isa-swizzling and KVO]]></title>
