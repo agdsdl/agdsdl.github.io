@@ -83,7 +83,7 @@ vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和de
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建之vscode</a></h1>
     
     
       <p class="meta">
@@ -144,33 +144,11 @@ vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和de
 
 <h2>配置代码提示和自动完成</h2>
 
-<p>vscode使用TypeScript定义文件（比如<code>node.d.ts</code>）来提供代码提示和自动完成功能。
-vscode推荐使用typings安装和管理TypeScript文件。
-首先使用下面代码安装typings：</p>
+<h3>（2016.4.5勘误）</h3>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g typings
-</span></code></pre></td></tr></table></div></figure>
+<p>发现有时候vscode不能正确的进行代码提示，到vscode官网一看，代码提示的安装方法更新了，以下是最新内容：</p>
 
-
-<p>这将在全局安装typings。</p>
-
-<p>然后，在你的工程目录下，安装你需要的TypeScript文件：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>typings install node --ambient
-</span><span class='line'>typings install express --ambient
-</span><span class='line'><span class="c"># 或者合并成一行：</span>
-</span><span class='line'><span class="c"># typings install node express --ambient</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装完之后，应该就可以看到代码提示了。</p>
-
-<h2>更多配置选项</h2>
+<h3>添加jsconfig.json</h3>
 
 <p>在工程目录下新建一个文件<code>jsconfig.json</code>，填入以下内容：</p>
 
@@ -190,6 +168,45 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 
 <p>这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。</p>
+
+<h3>添加TypeScript定义文件</h3>
+
+<p>vscode使用TypeScript定义文件（比如<code>node.d.ts</code>）来提供代码提示和自动完成功能。
+vscode推荐使用typings安装和管理TypeScript文件。
+首先使用下面代码安装typings：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g typings
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这将在全局安装typings。</p>
+
+<p>然后，在你的工程目录下，安装你需要的TypeScript文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>typings install node --ambient
+</span><span class='line'>typings install express serve-static express-serve-static-core --ambient
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完之后，应该就可以看到代码提示了。</p>
+
+<h3>验证代码提示功能</h3>
+
+<p>有一个简单的方法验证vscode代码提示功能是否正常了：
+新起一行输入</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>__dirname
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>鼠标移到<code>__dirname</code>上，如果提示类型是<code>Any</code>，说明代码提示功能还不正常。
+如果能提示类型是<code>string</code>，那么说明代码提示工作正常了。</p>
+
+<p>注：<code>__dirname</code>是nodejs内置全局变量。</p>
 
 </div>
   
@@ -638,7 +655,7 @@ Rsync本质是通过ssh将文件拷贝到服务器，
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建</a>
+        <a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建之vscode</a>
       </li>
     
       <li class="post">

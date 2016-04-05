@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vscode | 乐の博客]]></title>
   <link href="http://blog.zhidong.info/blog/categories/vscode/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-03-15T12:41:24+08:00</updated>
+  <updated>2016-04-05T21:53:27+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
     <name><![CDATA[Dongle Su]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Nodejs 环境搭建]]></title>
+    <title type="html"><![CDATA[Nodejs 环境搭建之vscode]]></title>
     <link href="http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools/"/>
     <updated>2016-03-15T12:37:13+08:00</updated>
     <id>http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools</id>
@@ -58,6 +58,25 @@ function vscode () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args 
 
 <h2>配置代码提示和自动完成</h2>
 
+<h3>（2016.4.5勘误）</h3>
+
+<p>发现有时候vscode不能正确的进行代码提示，到vscode官网一看，代码提示的安装方法更新了，以下是最新内容：</p>
+
+<h3>添加jsconfig.json</h3>
+
+<p>在工程目录下新建一个文件<code>jsconfig.json</code>，填入以下内容：
+<code>
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs"
+    }
+}
+</code>
+这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。</p>
+
+<h3>添加TypeScript定义文件</h3>
+
 <p>vscode使用TypeScript定义文件（比如<code>node.d.ts</code>）来提供代码提示和自动完成功能。
 vscode推荐使用typings安装和管理TypeScript文件。
 首先使用下面代码安装typings：
@@ -67,46 +86,23 @@ npm install -g typings
 这将在全局安装typings。</p>
 
 <p>然后，在你的工程目录下，安装你需要的TypeScript文件：
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>typings install node <span class="p">&amp;</span>ndash<span class="p">;</span>ambient
-</span><span class='line'>typings install express <span class="p">&amp;</span>ndash<span class="p">;</span>ambient&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;或者合并成一行：&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;typings install node express <span class="p">&amp;</span>ndash<span class="p">;</span>ambient&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;安装完之后，应该就可以看到代码提示了。
-</span><span class='line'>
-</span><span class='line'><span class="c">##更多配置选项</span>
-</span><span class='line'>在工程目录下新建一个文件<span class="sb">`</span>jsconfig.json<span class="sb">`</span>，填入以下内容：
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<span class="o">{</span>
-</span><span class='line'>    <span class="p">&amp;</span>ldquo<span class="p">;</span>compilerOptions<span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="o">{</span>
-</span><span class='line'>        <span class="p">&amp;</span>ldquo<span class="p">;</span>target<span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="p">&amp;</span>ldquo<span class="p">;</span>es5<span class="p">&amp;</span>rdquo<span class="p">;</span>,
-</span><span class='line'>        <span class="p">&amp;</span>ldquo<span class="p">;</span>module<span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="p">&amp;</span>ldquo<span class="p">;</span>commonjs<span class="p">&amp;</span>rdquo<span class="p">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。</p>
+<code>bash
+typings install node --ambient
+typings install express serve-static express-serve-static-core --ambient
+</code>
+安装完之后，应该就可以看到代码提示了。</p>
+
+<h3>验证代码提示功能</h3>
+
+<p>有一个简单的方法验证vscode代码提示功能是否正常了：
+新起一行输入
+<code>
+__dirname
+</code>
+鼠标移到<code>__dirname</code>上，如果提示类型是<code>Any</code>，说明代码提示功能还不正常。
+如果能提示类型是<code>string</code>，那么说明代码提示工作正常了。</p>
+
+<p>注：<code>__dirname</code>是nodejs内置全局变量。</p>
 
 <!-- more -->
 
