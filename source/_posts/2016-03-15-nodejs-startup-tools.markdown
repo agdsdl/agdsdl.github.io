@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "Nodejs 环境搭建"
+title: "Nodejs 环境搭建之vscode"
 date: 2016-03-15 12:37:13 +0800
 comments: true
-categories: [nodejs, vscode]
+categories: [nodejs,vscode]
+keywords: "nodejs,vscode,IntelliSense"
 ---
 开始学习Nodejs了，在这里记录一些轨迹吧。
 
@@ -38,6 +39,20 @@ function vscode () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args 
 请参考https://code.visualstudio.com/docs/editor/setup
 
 ##配置代码提示和自动完成
+###（2016.4.5勘误）
+发现有时候vscode不能正确的进行代码提示，到vscode官网一看，代码提示的安装方法更新了，以下是最新内容：
+### 添加jsconfig.json
+在工程目录下新建一个文件`jsconfig.json`，填入以下内容：
+```
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs"
+    }
+}
+```
+这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。
+### 添加TypeScript定义文件
 vscode使用TypeScript定义文件（比如`node.d.ts`）来提供代码提示和自动完成功能。
 vscode推荐使用typings安装和管理TypeScript文件。
 首先使用下面代码安装typings：
@@ -49,23 +64,19 @@ npm install -g typings
 然后，在你的工程目录下，安装你需要的TypeScript文件：
 ``` bash
 typings install node --ambient
-typings install express --ambient
-# 或者合并成一行：
-# typings install node express --ambient
+typings install express serve-static express-serve-static-core --ambient
 ```
 安装完之后，应该就可以看到代码提示了。
+###验证代码提示功能
+有一个简单的方法验证vscode代码提示功能是否正常了：
+新起一行输入
+```
+__dirname
+```
+鼠标移到`__dirname`上，如果提示类型是`Any`，说明代码提示功能还不正常。
+如果能提示类型是`string`，那么说明代码提示工作正常了。
 
-##更多配置选项
-在工程目录下新建一个文件`jsconfig.json`，填入以下内容：
-```
-{
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs"
-    }
-}
-```
-这告诉vscode你正在使用ES5的javascript标准写代码，下面一行表示支持使用commonjs导出的模块（来进行代码提示）。
+注：`__dirname`是nodejs内置全局变量。
 
 <!-- more -->
 

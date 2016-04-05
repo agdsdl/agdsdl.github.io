@@ -4,6 +4,7 @@ title: "搭建基于Octopress的博客"
 date: 2015-07-29 10:25:47
 comments: true
 categories: [Octopress]
+keywords: "Octopress,blog"
 ---
 
 ##概要

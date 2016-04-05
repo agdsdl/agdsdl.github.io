@@ -4,6 +4,7 @@ title: "class-swizzling, isa-swizzling and KVO"
 date: 2016-03-07 20:44:20 +0800
 comments: true
 categories: [iOS, runtime, KVO]
+keywords: "iOS,KVO,isa-swizzling,class-swizzling"
 ---
 ##前言
 看`ReactiveCocoa`源码的时候，被`RACSwizzleClass`卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。

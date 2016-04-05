@@ -4,6 +4,7 @@ title: "objective-c runtime 拾遗"
 date: 2016-03-04 14:55:42 +0800
 comments: true
 categories: [iOS, runtime]
+keywords: "iOS,runtime"
 ---
 
 关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。
