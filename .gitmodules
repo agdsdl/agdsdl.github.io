@@ -1,0 +1,4 @@
+[submodule ".themes/greyshade"]
+	path = .themes/greyshade
+	url = git://github.com/allenhsu/greyshade.git
+	branch = master
