@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: runtime | 乐の博客]]></title>
-  <link href="http://blog.zhidong.info/blog/categories/runtime/atom.xml" rel="self"/>
-  <link href="http://blog.zhidong.info/"/>
-  <updated>2019-11-08T17:24:47+08:00</updated>
-  <id>http://blog.zhidong.info/</id>
+  <link href="https://zhidong.rochu.cn/blog/categories/runtime/atom.xml" rel="self"/>
+  <link href="https://zhidong.rochu.cn/"/>
+  <updated>2019-11-08T18:03:02+08:00</updated>
+  <id>https://zhidong.rochu.cn/</id>
   <author>
     <name><![CDATA[zhidong]]></name>
     <email><![CDATA[agdsdl@sina.com.cn]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[class-swizzling, isa-swizzling and KVO]]></title>
-    <link href="http://blog.zhidong.info/blog/2016/03/07/class-swizzling/"/>
+    <link href="https://zhidong.rochu.cn/blog/2016/03/07/class-swizzling/"/>
     <updated>2016-03-07T20:44:20+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2016/03/07/class-swizzling</id>
+    <id>https://zhidong.rochu.cn/blog/2016/03/07/class-swizzling</id>
     <content type="html"><![CDATA[<h2>前言</h2>
 
 <p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
@@ -338,9 +338,9 @@
   
   <entry>
     <title type="html"><![CDATA[objective-c runtime 拾遗]]></title>
-    <link href="http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup/"/>
+    <link href="https://zhidong.rochu.cn/blog/2016/03/04/objc-runtime-pickup/"/>
     <updated>2016-03-04T14:55:42+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup</id>
+    <id>https://zhidong.rochu.cn/blog/2016/03/04/objc-runtime-pickup</id>
     <content type="html"><![CDATA[<p>关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。</p>
 
 <h2>动态添加类</h2>

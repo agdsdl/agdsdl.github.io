@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[乐の博客]]></title>
-  <link href="http://blog.zhidong.info/atom.xml" rel="self"/>
-  <link href="http://blog.zhidong.info/"/>
-  <updated>2019-11-08T17:24:47+08:00</updated>
-  <id>http://blog.zhidong.info/</id>
+  <link href="https://zhidong.rochu.cn/atom.xml" rel="self"/>
+  <link href="https://zhidong.rochu.cn/"/>
+  <updated>2019-11-08T18:03:02+08:00</updated>
+  <id>https://zhidong.rochu.cn/</id>
   <author>
     <name><![CDATA[zhidong]]></name>
     <email><![CDATA[agdsdl@sina.com.cn]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Nodejs 环境搭建之vscode]]></title>
-    <link href="http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools/"/>
+    <link href="https://zhidong.rochu.cn/blog/2016/03/15/nodejs-startup-tools/"/>
     <updated>2016-03-15T12:37:13+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2016/03/15/nodejs-startup-tools</id>
+    <id>https://zhidong.rochu.cn/blog/2016/03/15/nodejs-startup-tools</id>
     <content type="html"><![CDATA[<p>开始学习Nodejs了，在这里记录一些轨迹吧。</p>
 
 <p>工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
@@ -186,9 +186,9 @@ vscode推荐使用typings安装和管理TypeScript文件。
   
   <entry>
     <title type="html"><![CDATA[class-swizzling, isa-swizzling and KVO]]></title>
-    <link href="http://blog.zhidong.info/blog/2016/03/07/class-swizzling/"/>
+    <link href="https://zhidong.rochu.cn/blog/2016/03/07/class-swizzling/"/>
     <updated>2016-03-07T20:44:20+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2016/03/07/class-swizzling</id>
+    <id>https://zhidong.rochu.cn/blog/2016/03/07/class-swizzling</id>
     <content type="html"><![CDATA[<h2>前言</h2>
 
 <p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
@@ -210,7 +210,7 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 <p>对象的<code>isa</code>链会一直指向哪里?见下图:</p>
 
-<p><img src="http://blog.zhidong.info/images/class-diagram.jpg" alt="objc 关系图" /></p>
+<p><img src="https://zhidong.rochu.cn/images/class-diagram.jpg" alt="objc 关系图" /></p>
 
 <p>(图片来自<a href="http://blog.devtang.com/2013/10/15/objective-c-object-model/">http://blog.devtang.com/2013/10/15/objective-c-object-model/</a>)</p>
 
@@ -501,9 +501,9 @@ vscode推荐使用typings安装和管理TypeScript文件。
   
   <entry>
     <title type="html"><![CDATA[objective-c runtime 拾遗]]></title>
-    <link href="http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup/"/>
+    <link href="https://zhidong.rochu.cn/blog/2016/03/04/objc-runtime-pickup/"/>
     <updated>2016-03-04T14:55:42+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup</id>
+    <id>https://zhidong.rochu.cn/blog/2016/03/04/objc-runtime-pickup</id>
     <content type="html"><![CDATA[<p>关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。</p>
 
 <h2>动态添加类</h2>
@@ -643,9 +643,9 @@ vscode推荐使用typings安装和管理TypeScript文件。
   
   <entry>
     <title type="html"><![CDATA[编写一个iOS越狱插件(tweak)]]></title>
-    <link href="http://blog.zhidong.info/blog/2016/02/04/write-a-tweak/"/>
+    <link href="https://zhidong.rochu.cn/blog/2016/02/04/write-a-tweak/"/>
     <updated>2016-02-04T15:38:29+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2016/02/04/write-a-tweak</id>
+    <id>https://zhidong.rochu.cn/blog/2016/02/04/write-a-tweak</id>
     <content type="html"><![CDATA[<p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
 
 <h2>关于这个插件</h2>
@@ -797,9 +797,9 @@ vscode推荐使用typings安装和管理TypeScript文件。
   
   <entry>
     <title type="html"><![CDATA[搭建基于Octopress的博客]]></title>
-    <link href="http://blog.zhidong.info/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/"/>
+    <link href="https://zhidong.rochu.cn/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/"/>
     <updated>2015-07-29T18:25:47+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke</id>
+    <id>https://zhidong.rochu.cn/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke</id>
     <content type="html"><![CDATA[<h2>概要</h2>
 
 <p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
@@ -1260,9 +1260,9 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
   
   <entry>
     <title type="html"><![CDATA[IOS Hybrid开发 - 与OC交互]]></title>
-    <link href="http://blog.zhidong.info/blog/2015/07/23/ios-hybridkai-fa-yu-ocjiao-hu/"/>
+    <link href="https://zhidong.rochu.cn/blog/2015/07/23/ios-hybridkai-fa-yu-ocjiao-hu/"/>
     <updated>2015-07-23T17:23:57+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2015/07/23/ios-hybridkai-fa-yu-ocjiao-hu</id>
+    <id>https://zhidong.rochu.cn/blog/2015/07/23/ios-hybridkai-fa-yu-ocjiao-hu</id>
     <content type="html"><![CDATA[<ul>
 <li>原理：</li>
 </ul>
@@ -1344,9 +1344,9 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
   
   <entry>
     <title type="html"><![CDATA[IOS Hybrid开发 - Web基础]]></title>
-    <link href="http://blog.zhidong.info/blog/2015/07/23/ios-hybridkai-fa-webji-chu/"/>
+    <link href="https://zhidong.rochu.cn/blog/2015/07/23/ios-hybridkai-fa-webji-chu/"/>
     <updated>2015-07-23T17:21:17+08:00</updated>
-    <id>http://blog.zhidong.info/blog/2015/07/23/ios-hybridkai-fa-webji-chu</id>
+    <id>https://zhidong.rochu.cn/blog/2015/07/23/ios-hybridkai-fa-webji-chu</id>
     <content type="html"><![CDATA[<p>Hybrid开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
 他同时涉及到web开发和native开发。
 这里简单讲讲web开发。</p>

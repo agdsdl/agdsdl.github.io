@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://blog.zhidong.info/sitemap.xml 
+Sitemap: https://zhidong.rochu.cn/sitemap.xml 
