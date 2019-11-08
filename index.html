@@ -1,105 +1,113 @@
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE HTML>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>乐の博客</title>
-  <meta name="author" content="Dongle Su">
+	<meta charset="utf-8">
+	<title>乐の博客</title>
+	<meta name="author" content="zhidong">
 
-  
-  <meta name="description" content="开始学习Nodejs了，在这里记录一些轨迹吧。 工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
-Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。
-vscode是挺不错的nodejs编辑工具，支持代码提示、自动完成和debug， &hellip;">
-  
+	
+	<meta name="description" content="nodejs, vscode Nodejs 环境搭建之vscode 开始学习Nodejs了，在这里记录一些轨迹吧。 工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
+Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。 &hellip;">
+	
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  
-  <link rel="canonical" href="http://blog.zhidong.info/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="乐の博客" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
-
-  
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-65560025-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
+	<link href="/atom.xml" rel="alternate" title="乐の博客" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://blog.zhidong.info/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">乐の博客</a></h1>
-  
-    <h2>行而不思则罔，思而不行则怠</h2>
-  
-</hgroup>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">	
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		document.write("<img src='/images/pingtouge.png' alt='Profile Picture' style='width: 160px;' />");
+	</script>
+</div>
+<h1><a href="/">乐の博客</a></h1>
+<p class="subtitle">行而不思则罔，思而不行则怠</p>
+<nav id="main-nav"><ul>
+	<li><a href="/">Blog</a></li>
+	<li><a href="/about">About</a></li>
+	<li><a href="/portfolio">Portfolio</a></li>
+	<li><a href="/archives">Archive</a></li>
 </ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="blog.zhidong.info">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
 </nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
+<nav id="sub-nav">
+	<div class="social">
+		
+		<a class="weibo" href="http://www.weibo.com/agdsdl" title="Weibo">Weibo</a>
+		
+		
+		
+		
+		
+		<a class="github" href="https://github.com/agdsdl" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<p class="description">知冬的后花园</p>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建之vscode</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
+<time datetime="2016-03-15T12:37:13+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
 
 
-<time class='entry-date' datetime='2016-03-15T12:37:13+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:37 pm</span></time>
-        
-      </p>
-    
-  </header>
+	<a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/vscode/'>vscode</a>
 
 
-  <div class="entry-content"><p>开始学习Nodejs了，在这里记录一些轨迹吧。</p>
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2016/03/15/nodejs-startup-tools/" itemprop="url">Nodejs 环境搭建之vscode</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>开始学习Nodejs了，在这里记录一些轨迹吧。</p>
 
 <p>工欲善其事，必先利其器。在开始之前，先搭好顺手的工具。
 Nodejs的安装网上有很多教程了，这里着重介绍开发工具vscode的安装和配置。
@@ -208,39 +216,41 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 <p>注：<code>__dirname</code>是nodejs内置全局变量。</p>
 
+
+		
+		<a href="/blog/2016/03/15/nodejs-startup-tools/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-07T20:44:20+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/kvo/'>kvo</a>, <a class='category' href='/blog/categories/runtime/'>runtime</a>
+
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/03/15/nodejs-startup-tools/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/07/class-swizzling/">Class-swizzling, Isa-swizzling and KVO</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-07T20:44:20+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:44 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>前言</h2>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2016/03/07/class-swizzling/" itemprop="url">Class-swizzling, Isa-swizzling and KVO</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h2>前言</h2>
 
 <p>看<code>ReactiveCocoa</code>源码的时候，被<code>RACSwizzleClass</code>卡住了，做了以下研究，并把注释后的代码放在文章最后，如果不想看过程可以直接跳到最后。</p>
 
@@ -285,39 +295,41 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 <p>所以，你应该用<code>class</code>方法(因为系统同时重写了class方法使其返回对象原来的类)，而不是<code>isa</code>(object_getClass)来取得对象所属的类。</p>
 
+
+		
+		<a href="/blog/2016/03/07/class-swizzling/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-04T14:55:42+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/runtime/'>runtime</a>
+
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/03/07/class-swizzling/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/04/objc-runtime-pickup/">Objective-c Runtime 拾遗</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-04T14:55:42+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:55 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。</p>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2016/03/04/objc-runtime-pickup/" itemprop="url">Objective-c Runtime 拾遗</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>关于OC runtime、消息转发网上已经有很多文章，这里就不重复了，只是将一下不常见的、容易遗漏的列一下。</p>
 
 <h2>动态添加类</h2>
 
@@ -382,39 +394,41 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 <p><a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html">参考</a></p>
 
+
+		
+		<a href="/blog/2016/03/04/objc-runtime-pickup/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-02-04T15:38:29+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/jailbreak/'>jailbreak</a>
+
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/03/04/objc-runtime-pickup/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/02/04/write-a-tweak/">编写一个iOS越狱插件(tweak)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-02-04T15:38:29+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:38 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2016/02/04/write-a-tweak/" itemprop="url">编写一个iOS越狱插件(tweak)</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>折腾了几天，搞定一个tweak(FPSCounter)，把一些重要步骤记录一下。</p>
 
 <h2>关于这个插件</h2>
 
@@ -465,39 +479,41 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 <p>开始编写tweak！</p>
 
+
+		
+		<a href="/blog/2016/02/04/write-a-tweak/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-29T18:25:47+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/octopress/'>octopress</a>
+
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/02/04/write-a-tweak/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-29T18:25:47+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:25 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>概要</h2>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/" itemprop="url">搭建基于Octopress的博客</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h2>概要</h2>
 
 <p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
 你只需本地写好markdown文件，然后<code>rake generate</code>就可以生成博客空间的所有静态网页，
@@ -519,39 +535,41 @@ Octopress支持两种更新方式：github和Rsync</p>
 Rsync本质是通过ssh将文件拷贝到服务器，
 你可以看<a href="http://octopress.org/docs/deploying/rsync/">这篇官方文档</a>，这里就不深入阐述了。</p>
 
+
+		
+		<a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-23T17:23:57+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/hybird/'>hybird</a>, <a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/web/'>web</a>
+
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">IOS Hybird开发 - 与OC交互</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-23T17:23:57+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:23 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/" itemprop="url">IOS Hybird开发 - 与OC交互</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<ul>
 <li>原理：</li>
 </ul>
 
@@ -572,39 +590,41 @@ Rsync本质是通过ssh将文件拷贝到服务器，
 
 <p>开源库：<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">https://github.com/marcuswestin/WebViewJavascriptBridge</a></p>
 
+
+		
+		<a href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-23T17:21:17+08:00" data-updated="true" itemprop="datePublished"></time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/hybird/'>hybird</a>, <a class='category' href='/blog/categories/ios/'>ios</a>, <a class='category' href='/blog/categories/web/'>web</a>
+
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/23/ios-hybirdkai-fa-yu-ocjiao-hu/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">IOS Hybird开发 - Web基础</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-23T17:21:17+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:21 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/" itemprop="url">IOS Hybird开发 - Web基础</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
 他同时涉及到web开发和native开发。
 这里简单讲讲web开发。</p>
 
@@ -625,89 +645,54 @@ Rsync本质是通过ssh将文件拷贝到服务器，
 
 <p>css/ css文件目录</p>
 
+
+		
+		<a href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/23/ios-hybirdkai-fa-webji-chu/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
+<nav id="pagenavi">
     
-    <a href="/blog/archives">Blog Archives</a>
     
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Categories</h1>
-  <ul id="categories">
-    <li><a href='/blog/categories/hybird/'>hybird (2)</a></li><li><a href='/blog/categories/ios/'>ios (5)</a></li><li><a href='/blog/categories/jailbreak/'>jailbreak (1)</a></li><li><a href='/blog/categories/kvo/'>kvo (1)</a></li><li><a href='/blog/categories/nodejs/'>nodejs (1)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li><li><a href='/blog/categories/runtime/'>runtime (2)</a></li><li><a href='/blog/categories/vscode/'>vscode (1)</a></li><li><a href='/blog/categories/web/'>web (2)</a></li>
-  </ul>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2016/03/15/nodejs-startup-tools/">Nodejs 环境搭建之vscode</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/07/class-swizzling/">Class-swizzling, Isa-swizzling and KVO</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/04/objc-runtime-pickup/">Objective-c Runtime 拾遗</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/04/write-a-tweak/">编写一个iOS越狱插件(tweak)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/">搭建基于Octopress的博客</a>
-      </li>
-    
-  </ul>
-</section>
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner">Copyright &copy; 2019
+
+    zhidong
+
+<br>
+Powered by Octopress.
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
 
 
 
 
-<section>
-  <h1>About me</h1>
-  <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1421886475&verifier=346b7a09&dpc=1"></iframe>
-  <p></p>
-</section>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-65560025-1']);
+		_gaq.push(['_trackPageview']);
 
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - Dongle Su -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 
 
 
-
-
-
-
-
-
-
-
+		</div>
+	</div>
 </body>
 </html>

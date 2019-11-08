@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Ios | 乐の博客]]></title>
+  <title><![CDATA[Category: ios | 乐の博客]]></title>
   <link href="http://blog.zhidong.info/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://blog.zhidong.info/"/>
-  <updated>2016-04-05T21:53:27+08:00</updated>
+  <updated>2019-11-08T10:39:58+08:00</updated>
   <id>http://blog.zhidong.info/</id>
   <author>
-    <name><![CDATA[Dongle Su]]></name>
+    <name><![CDATA[zhidong]]></name>
     <email><![CDATA[agdsdl@sina.com.cn]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
-    <title type="html"><![CDATA[Class-swizzling, Isa-swizzling and KVO]]></title>
+    <title type="html"><![CDATA[class-swizzling, isa-swizzling and KVO]]></title>
     <link href="http://blog.zhidong.info/blog/2016/03/07/class-swizzling/"/>
     <updated>2016-03-07T20:44:20+08:00</updated>
     <id>http://blog.zhidong.info/blog/2016/03/07/class-swizzling</id>
@@ -337,7 +337,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Objective-c Runtime 拾遗]]></title>
+    <title type="html"><![CDATA[objective-c runtime 拾遗]]></title>
     <link href="http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup/"/>
     <updated>2016-03-04T14:55:42+08:00</updated>
     <id>http://blog.zhidong.info/blog/2016/03/04/objc-runtime-pickup</id>
