@@ -5,7 +5,7 @@
 url: http://blog.zhidong.info
 title: 乐の博客
 subtitle: 行而不思则罔，思而不行则怠
-author: Dongle Su
+author: zhidong
 simple_search: https://www.google.com/search
 description: 知冬的后花园
 
@@ -64,7 +64,7 @@ default_asides: [custom/asides/category_list.html, asides/recent_posts.html, asi
 # ----------------------- #
 
 # Github repositories
-#github_user: agdsdl
+github_user: agdsdl
 #github_repo_count: 0
 #github_show_profile_link: true
 #github_skip_forks: true
@@ -101,4 +101,5 @@ google_analytics_tracking_id: UA-65560025-1
 #facebook_like: true
 
 # sina Weibo
-weibo_share: true
+#vweibo_share: true
+weibo_user: agdsdl
