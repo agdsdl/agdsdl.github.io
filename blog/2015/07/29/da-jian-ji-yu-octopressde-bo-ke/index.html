@@ -553,6 +553,22 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
 </div>
 
 
+
+
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'agdsdl',
+    repo: 'agdsdl.github.io',
+    oauth: {
+        client_id: '29bbf743e30b99394771',
+        client_secret: '41e4b7f1aa79742fc459f2971ad51596df5e4dda',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
 </div>
 			</div>
 			<footer id="footer" class="inner">Copyright &copy; 2019
