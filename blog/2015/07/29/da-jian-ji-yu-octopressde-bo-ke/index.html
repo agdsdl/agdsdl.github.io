@@ -538,7 +538,7 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
 </div>
 
 </article>
-
+<!-- 
 	<div class="share">
 	<div class="addthis_toolbox addthis_default_style addthis_16x16_style">
 	
@@ -552,24 +552,26 @@ default_asides:     [custom/asides/category_list.html, asides/recent_posts.html,
   <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
 </div>
 
+ -->
 
 
-
-<div id="gitmentContainer"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-var gitment = new Gitment({
-    owner: 'agdsdl',
-    repo: 'agdsdl.github.io',
-    oauth: {
-        client_id: '29bbf743e30b99394771',
-        client_secret: '41e4b7f1aa79742fc459f2971ad51596df5e4dda',
-    },
-});
-gitment.render('gitmentContainer');
-</script>
-</div>
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="gitmentContainer"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    <script>
+    var gitment = new Gitment({
+        owner: 'agdsdl',
+        repo: 'agdsdl.github.io',
+        oauth: {
+            client_id: '29bbf743e30b99394771',
+            client_secret: '41e4b7f1aa79742fc459f2971ad51596df5e4dda',
+        },
+    });
+    gitment.render('gitmentContainer');
+    </script>
+</section></div>
 			</div>
 			<footer id="footer" class="inner">Copyright &copy; 2019
 
