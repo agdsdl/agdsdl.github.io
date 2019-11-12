@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "IOS Hybird开发 - 与OC交互"
+title: "IOS Hybrid开发 - 与OC交互"
 date: 2015-07-23 17:23:57 +0800
 comments: true
-categories: [iOS, Hybird, Web]
-keywords: "iOS,Hybird,Web"
+categories: [iOS, Hybrid, Web]
+keywords: "iOS,Hybrid,Web"
 ---
 * 原理：
 
@@ -52,7 +52,7 @@ javascript调用OC一般是通过在页面中发起一个特定的url请求，�
 
 纯web页面用chrome调试最方便。
 
-hybird开发中的webView用safari调试即可。
+hybrid开发中的webView用safari调试即可。
  * 在safari选项中勾选“显示开发菜单”。
  * 在手机或模拟器打开web页面的时候，在开发菜单中选择调试的页面。
 

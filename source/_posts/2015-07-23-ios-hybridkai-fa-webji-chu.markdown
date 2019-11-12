@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "IOS Hybird开发 - Web基础"
+title: "IOS Hybrid开发 - Web基础"
 date: 2015-07-23 17:21:17 +0800
 comments: true
-categories: [iOS, Hybird, Web]
-keywords: "iOS,Hybird,Web"
+categories: [iOS, Hybrid, Web]
+keywords: "iOS,Hybrid,Web"
 ---
 
-Hybird开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
+Hybrid开发就是native和web混合开发。他有两方面的优势：跨平台和更新快。
 他同时涉及到web开发和native开发。
 这里简单讲讲web开发。
 
