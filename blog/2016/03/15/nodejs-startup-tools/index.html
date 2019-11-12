@@ -265,19 +265,21 @@ vscode推荐使用typings安装和管理TypeScript文件。
 
 <section id="comment">
     <h1 class="title">Comments</h1>
-    <div id="gitmentContainer"></div>
-    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-    <script src="/javascripts/gitment.browser.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-    var gitment = new Gitment({
-        owner: 'agdsdl',
-        repo: 'agdsdl.github.io',
-        oauth: {
-            client_id: '29bbf743e30b99394771',
-            client_secret: '41e4b7f1aa79742fc459f2971ad51596df5e4dda',
-        },
-    });
-    gitment.render('gitmentContainer');
+    const gitalk = new Gitalk({
+    clientID: '29bbf743e30b99394771',
+    clientSecret: '41e4b7f1aa79742fc459f2971ad51596df5e4dda',
+    repo: 'agdsdl.github.io',
+    owner: 'agdsdl',
+    admin: ['agdsdl'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+    })
+
+    gitalk.render('gitalk-container')
     </script>
 </section></div>
 			</div>
