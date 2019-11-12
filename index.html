@@ -513,27 +513,163 @@ vscode推荐使用typings安装和管理TypeScript文件。
 	</div>
 	<h1 class="title" itemprop="name"><a href="/blog/2015/07/29/da-jian-ji-yu-octopressde-bo-ke/" itemprop="url">搭建基于Octopress的博客</a></h1>
 	<div class="entry-content" itemprop="articleBody">
-		<h2>概要</h2>
+		<h2>2019.11.12更新</h2>
 
-<p>不同于其他博客网站，Octopress不需要在网站上编辑页面和发布；
-你只需本地写好markdown文件，然后<code>rake generate</code>就可以生成博客空间的所有静态网页，
-然后<code>rake deploy</code>就可以将网站更新到服务器。
-Octopress支持两种更新方式：github和Rsync</p>
+<p>关于系统更新到MacOS 10.14之后ruby环境的调整，以及多说关闭之后评论系统的选择。</p>
 
-<h3>github</h3>
+<h3>系统更新到10.14之后</h3>
 
-<p>github提供了免费的静态网页托管服务，你需要新建一个名为username.github.io的代码仓库，将你的网站推送到这个仓库，
-之后就可以用浏览器访问你的网站了：username.github.io
-采用github更新方式，本质上就是将Octopress生成的本地页面推送到username.github.io
-由于github是免费的，通过git管理网站，并且支持CNAME域名指向，这真是一种方便又快捷的建站方式，
-因此Octopress推荐使用这种方式，<a href="http://blog.devtang.com/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a>和本博采用的也是这种方式。</p>
+<p><code>gem install</code>工具会出错：</p>
 
-<h3>Rsync</h3>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo gem install bundler
+</span><span class='line'>Password:
+</span><span class='line'>Fetching: bundler-2.0.2.gem (100%)
+</span><span class='line'>ERROR:  While executing gem ... (Gem::FilePermissionError)
+</span><span class='line'>    You don't have write permissions for the /usr/bin directory.</span></code></pre></td></tr></table></div></figure>
 
-<p>然而你可能有了自己的服务器，或者站点里包含一些动态页面，必须使用自己的服务器。
-这时你就可以用Rsync同步方法将网站同步到你的服务器。
-Rsync本质是通过ssh将文件拷贝到服务器，
-你可以看<a href="http://octopress.org/docs/deploying/rsync/">这篇官方文档</a>，这里就不深入阐述了。</p>
+
+<p>这是因为Apple在OS X El Capitan中全面启用了名为System Integrity Protection (SIP)的系统完整性保护技术。大部分系统文件禁止直接修改。</p>
+
+<p>要退出SIP需要重启到recovery模式下进行（重启按住command+r），这里采取另一个办法：
+<code>/usr/bin</code>禁止写入后，一般都用<code>/usr/local/bin</code>目录替代。<code>gem install</code>可以使用 <code>-n install_path</code>指定安装路径：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install xxx -n /usr/local/bin</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bundle install的时候还会出错:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle install --path vendor/bundle
+</span><span class='line'>Fetching gem metadata from https://rubygems.org/..........
+</span><span class='line'>Using rake 10.5.0
+</span><span class='line'>Fetching RedCloth 4.2.9
+</span><span class='line'>Installing RedCloth 4.2.9 with native extensions
+</span><span class='line'>Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+</span><span class='line'>  ...
+</span><span class='line'>mkmf.rb can't find header files for ruby at
+</span><span class='line'>/System/Library/Frameworks/Ruby.framework/Versions/2.3/usr/lib/ruby/include/ruby.h
+</span><span class='line'>
+</span><span class='line'>extconf failed, exit code 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>因为macos10.14之后xcode11内置了macos10.15的SDK，预装了ruby2.6，没有ruby2.3的目录</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Ruby.framework/Versions/2.6/usr/include/ruby-2.6.0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是CommandLineTools里面还有macos10.14的SDK：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Ruby.framework/Versions/2.3/usr/include/ruby-2.3.0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo xcode-select --switch /Library/Developer/CommandLineTools</span></code></pre></td></tr></table></div></figure>
+
+
+<p>来切换SDK路径</p>
+
+<p>用</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby -rrbconfig -e 'puts RbConfig::CONFIG["rubyhdrdir"]'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以看到路径正确。</p>
+
+<p>之后<code>bundle install</code>可以正常安装。</p>
+
+<p>需要切换回xode11的sdk时：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo xcode-select --switch /Applications/Xcode.app</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>评论系统的选择</h3>
+
+<p>博客之前采用多说作为评论系统，可是多说关闭了，类似的友言、网易云跟帖等国内评论系统也相继停止服务。Disqus在国内一直被墙，需要重新选择一个评论系统。</p>
+
+<p>看了几天，基本瞄中了基于github issue的评论系统，如果blog也host在github上，那么就很相得益彰。它的数据也没那么容易丢失，除非github倒闭。。。</p>
+
+<p>一开始选择了名气较大的gitment，试用用了一下发现目前已不可用了：
+由于采用github API操作issue，因此带来了跨站(CORS)问题，而github禁止跨站，无法直接访问。</p>
+
+<p>解决办法是加一个中间代理服务器，给服务器返回头上添加跨站运行标志。
+gitment作者本来自己搭了个代理服务器给大家使用，可是现在已经停服了，如果自己搭代理服务器代价还是颇高的。
+而作者已经弃坑，两年多没有更新了，无奈弃之。</p>
+
+<p>后来发现了类似的评论系统：<a href="https://github.com/gitalk/gitalk">gitalk</a>，最近一年还在更新，试了下目前可用。
+它是怎么解决跨站问题呢？抓包看了下，发现它采用了Heroku提供的API，专门用于转发请求并允许CORS访问：<a href="https://cors-anywhere.herokuapp.com">https://cors-anywhere.herokuapp.com</a></p>
+
+<p>看来允许跨站请求头是个比较常见的问题。
+gitalk的接入方式类似gitment：</p>
+
+<ul>
+<li>首先要在github中新建一个OAuth Application，记下Client ID和Client Secret</li>
+<li>修改_layouts下面的post.html，在最下面添加：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;section id="comment"&gt;
+</span><span class='line'>    &lt;h1 class="title"&gt;Comments&lt;/h1&gt;
+</span><span class='line'>    &lt;div id="gitalk-container"&gt;&lt;/div&gt;
+</span><span class='line'>    &lt;link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"&gt;
+</span><span class='line'>    &lt;script src="https://unpkg.com/gitalk/dist/gitalk.min.js"&gt;&lt;/script&gt;
+</span><span class='line'>    &lt;script&gt;
+</span><span class='line'>    const gitalk = new Gitalk({
+</span><span class='line'>      clientID: 'GitHub Application Client ID',
+</span><span class='line'>      clientSecret: 'GitHub Application Client Secret',
+</span><span class='line'>      repo: 'GitHub repo',
+</span><span class='line'>      owner: 'GitHub repo owner',
+</span><span class='line'>      admin: ['GitHub repo owner and collaborators, only these guys can initialize github issues'],
+</span><span class='line'>      id: location.pathname,      // Ensure uniqueness and length less than 50
+</span><span class='line'>      distractionFreeMode: false  // Facebook-like distraction free mode
+</span><span class='line'>    })
+</span><span class='line'>    gitalk.render('gitalk-container')
+</span><span class='line'>    &lt;/script&gt;
+</span><span class='line'>&lt;/section&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GitHub repo可以直接填blog所在的repo，方便集中管理。</p>
+
+<p>博客发出之后需要自己先浏览并登录github账号，以初始化<code>issue page</code>，之后就可以正常评论了。</p>
 
 
 		
